@@ -1,0 +1,449 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout>
+  <!-- Hero Section -->
+  <section class="pt-12 md:pt-24 pb-10 text-center">
+    <h1 class="text-3xl md:text-6xl font-bold tracking-tight">
+      Your AI dev team, parallelized<span class="text-[#FCD34D]">.</span>
+    </h1>
+    <p
+      class="mt-6 text-neutral-400 max-w-4xl mx-auto text-base md:text-lg leading-relaxed"
+    >
+      Run AI agents in parallel, in isolated workspaces. Automated worktree
+      management, context loading from GitHub, magic git commands, and more.
+      Open source and free forever.
+    </p>
+
+    <!-- Download Badge -->
+    <div
+      class="mt-6 inline-flex items-center gap-2 bg-coolgray-300/60 text-sm px-4 py-2 rounded"
+    >
+      <svg
+        class="w-4 h-4 text-[#FCD34D]"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke-width="1.5"
+        stroke="currentColor"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          d="M9 17.25v1.007a3 3 0 01-.879 2.122L7.5 21h9l-.621-.621A3 3 0 0115 18.257V17.25m6-12V15a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 15V5.25A2.25 2.25 0 015.25 3h13.5A2.25 2.25 0 0121 5.25z"
+        ></path>
+      </svg>
+      <span class="text-neutral-400">Tested on macOS — Windows &amp; Linux <a href="https://github.com/coollabsio/jean" target="_blank" class="text-[#FCD34D] underline">testers needed</a></span>
+    </div>
+
+    <!-- GitHub Link -->
+    <div class="mt-8 max-w-xl mx-auto">
+      <a
+        href="https://github.com/coollabsio/jean"
+        target="_blank"
+        class="font-mono bg-coolgray-300 px-4 py-3 rounded text-xs md:text-sm text-left flex items-center justify-between hover:bg-coolgray-400 transition-colors"
+      >
+        <div class="flex items-center gap-2">
+          <svg class="w-5 h-5 text-[#FCD34D]" fill="currentColor" viewBox="0 0 24 24">
+            <path
+              fill-rule="evenodd"
+              d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"
+              clip-rule="evenodd"
+            />
+          </svg>
+          <span>coollabsio/jean</span>
+        </div>
+        <svg
+          class="w-5 h-5 text-neutral-400"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="1.5"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"
+          ></path>
+        </svg>
+      </a>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section id="features" class="mt-16 pb-10">
+    <h2 class="text-2xl md:text-4xl font-bold text-center">
+      Everything you need<span class="text-[#FCD34D]">.</span>
+    </h2>
+    <p class="mt-4 text-neutral-400 text-center max-w-2xl mx-auto">
+      A complete AI agent workspace, fully open source.
+    </p>
+
+    <dl
+      class="mt-12 grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-2xl lg:max-w-none"
+    >
+      <!-- Feature 1 -->
+      <div class="flex flex-col">
+        <dt class="flex items-center gap-x-3 text-xl text-white">
+          <svg
+            class="w-6 h-6 text-[#FCD34D] flex-shrink-0"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 18v-2.25zM13.5 6a2.25 2.25 0 012.25-2.25H18A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25a2.25 2.25 0 01-2.25-2.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z"
+            ></path>
+          </svg>
+          Isolated Workspaces
+        </dt>
+        <dd
+          class="mt-4 flex flex-auto flex-col text-sm leading-6 text-neutral-400"
+        >
+          <p class="flex-auto">
+            Run multiple AI agents in parallel, each in its own isolated git
+            worktree. No conflicts, no interference, maximum throughput.
+          </p>
+        </dd>
+      </div>
+
+      <!-- Feature 2 -->
+      <div class="flex flex-col">
+        <dt class="flex items-center gap-x-3 text-xl text-white">
+          <svg
+            class="w-6 h-6 text-[#FCD34D] flex-shrink-0"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.455 2.456L21.75 6l-1.036.259a3.375 3.375 0 00-2.455 2.456zM16.894 20.567L16.5 21.75l-.394-1.183a2.25 2.25 0 00-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 001.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 001.423 1.423l1.183.394-1.183.394a2.25 2.25 0 00-1.423 1.423z"
+            ></path>
+          </svg>
+          Magic Git Commands
+        </dt>
+        <dd
+          class="mt-4 flex flex-auto flex-col text-sm leading-6 text-neutral-400"
+        >
+          <p class="flex-auto">
+            Automated git workflows: review code, create commits, open PRs,
+            investigate issues, and resolve merge conflicts with AI assistance.
+          </p>
+        </dd>
+      </div>
+
+      <!-- Feature 3 -->
+      <div class="flex flex-col">
+        <dt class="flex items-center gap-x-3 text-xl text-white">
+          <svg
+            class="w-6 h-6 text-[#FCD34D] flex-shrink-0"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"
+            ></path>
+          </svg>
+          Context Loading
+        </dt>
+        <dd
+          class="mt-4 flex flex-auto flex-col text-sm leading-6 text-neutral-400"
+        >
+          <p class="flex-auto">
+            Load context from sessions, GitHub Issues, and Pull Requests
+            directly into your AI agent's workspace. No manual copy-pasting.
+          </p>
+        </dd>
+      </div>
+
+      <!-- Feature 4 -->
+      <div class="flex flex-col">
+        <dt class="flex items-center gap-x-3 text-xl text-white">
+          <svg
+            class="w-6 h-6 text-[#FCD34D] flex-shrink-0"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M20.25 6.375c0 2.278-3.694 4.125-8.25 4.125S3.75 8.653 3.75 6.375m16.5 0c0-2.278-3.694-4.125-8.25-4.125S3.75 4.097 3.75 6.375m16.5 0v11.25c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125V6.375m16.5 0v3.75m-16.5-3.75v3.75m16.5 0v3.75C20.25 16.153 16.556 18 12 18s-8.25-1.847-8.25-4.125v-3.75m16.5 0c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125"
+            ></path>
+          </svg>
+          Worktree Management
+        </dt>
+        <dd
+          class="mt-4 flex flex-auto flex-col text-sm leading-6 text-neutral-400"
+        >
+          <p class="flex-auto">
+            Automated worktree creation, archiving, and restoration. Manage
+            branches and workspaces without touching the command line.
+          </p>
+        </dd>
+      </div>
+
+      <!-- Feature 5 -->
+      <div class="flex flex-col">
+        <dt class="flex items-center gap-x-3 text-xl text-white">
+          <svg
+            class="w-6 h-6 text-[#FCD34D] flex-shrink-0"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M7.5 21L3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 12M21 7.5H7.5"
+            ></path>
+          </svg>
+          Automated Merging
+        </dt>
+        <dd
+          class="mt-4 flex flex-auto flex-col text-sm leading-6 text-neutral-400"
+        >
+          <p class="flex-auto">
+            Merge GitHub PRs or local worktrees automatically. Built-in merge
+            conflict resolution powered by AI.
+          </p>
+        </dd>
+      </div>
+
+      <!-- Feature 6 -->
+      <div class="flex flex-col">
+        <dt class="flex items-center gap-x-3 text-xl text-white">
+          <svg
+            class="w-6 h-6 text-[#FCD34D] flex-shrink-0"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M14.25 9.75L16.5 12l-2.25 2.25m-4.5 0L7.5 12l2.25-2.25M6 20.25h12A2.25 2.25 0 0020.25 18V6A2.25 2.25 0 0018 3.75H6A2.25 2.25 0 003.75 6v12A2.25 2.25 0 006 20.25z"
+            ></path>
+          </svg>
+          Open Source
+        </dt>
+        <dd
+          class="mt-4 flex flex-auto flex-col text-sm leading-6 text-neutral-400"
+        >
+          <p class="flex-auto">
+            Free forever under the Apache 2.0 license. Inspect the code,
+            contribute, and make it your own.
+          </p>
+        </dd>
+      </div>
+    </dl>
+  </section>
+
+  <!-- FAQ Section -->
+  <section id="faq" class="mt-16 pb-10">
+    <h2 class="text-2xl md:text-4xl font-bold text-center">
+      Frequently asked questions<span class="text-[#FCD34D]">.</span>
+    </h2>
+    <p class="mt-4 text-neutral-400 text-center max-w-2xl mx-auto">
+      Everything you need to know about Jean.
+    </p>
+
+    <div
+      class="mt-12 max-w-3xl mx-auto divide-y divide-coolgray-300 border-y border-coolgray-300"
+    >
+      <!-- FAQ 1 -->
+      <div class="faq-item py-4">
+        <button
+          class="faq-button w-full text-left text-sm font-medium flex justify-between items-center text-white"
+          aria-expanded="false"
+        >
+          <span>What is Jean?</span>
+          <svg
+            class="w-6 h-6 transition-transform duration-200 flex-shrink-0"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
+              clip-rule="evenodd"></path>
+          </svg>
+        </button>
+        <p class="faq-answer hidden mt-2 text-sm text-neutral-300 text-left">
+          Jean is an open-source AI assistant desktop application that helps you
+          manage multiple projects, worktrees, and sessions with Claude CLI.
+          It's designed for developers who work on multiple features or
+          repositories simultaneously.
+        </p>
+      </div>
+
+      <!-- FAQ 2 -->
+      <div class="faq-item py-4">
+        <button
+          class="faq-button w-full text-left text-sm font-medium flex justify-between items-center text-white"
+          aria-expanded="false"
+        >
+          <span>Is Jean really free?</span>
+          <svg
+            class="w-6 h-6 transition-transform duration-200 flex-shrink-0"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
+              clip-rule="evenodd"></path>
+          </svg>
+        </button>
+        <p class="faq-answer hidden mt-2 text-sm text-neutral-300 text-left">
+          Yes, 100%. Jean is open source under the Apache 2.0 license. There
+          are no paid tiers, no feature gates, and no usage limits. You bring
+          your own Claude API key.
+        </p>
+      </div>
+
+      <!-- FAQ 3 -->
+      <div class="faq-item py-4">
+        <button
+          class="faq-button w-full text-left text-sm font-medium flex justify-between items-center text-white"
+          aria-expanded="false"
+        >
+          <span>What platforms does Jean support?</span>
+          <svg
+            class="w-6 h-6 transition-transform duration-200 flex-shrink-0"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
+              clip-rule="evenodd"></path>
+          </svg>
+        </button>
+        <p class="faq-answer hidden mt-2 text-sm text-neutral-300 text-left">
+          Jean is currently tested on macOS. Windows and Linux should work but
+          are not yet fully tested — we're looking for testers! You'll need
+          Node.js and Rust installed as prerequisites.
+        </p>
+      </div>
+
+      <!-- FAQ 4 -->
+      <div class="faq-item py-4">
+        <button
+          class="faq-button w-full text-left text-sm font-medium flex justify-between items-center text-white"
+          aria-expanded="false"
+        >
+          <span>How does Jean work with git?</span>
+          <svg
+            class="w-6 h-6 transition-transform duration-200 flex-shrink-0"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
+              clip-rule="evenodd"></path>
+          </svg>
+        </button>
+        <p class="faq-answer hidden mt-2 text-sm text-neutral-300 text-left">
+          Jean uses git worktrees to create isolated workspaces for each AI
+          agent session. It automates common git operations like reviewing code,
+          creating commits, opening PRs, and resolving merge conflicts. Each
+          workspace is independent, so multiple agents can work on different
+          branches simultaneously.
+        </p>
+      </div>
+
+      <!-- FAQ 5 -->
+      <div class="faq-item py-4">
+        <button
+          class="faq-button w-full text-left text-sm font-medium flex justify-between items-center text-white"
+          aria-expanded="false"
+        >
+          <span>What AI models does Jean use?</span>
+          <svg
+            class="w-6 h-6 transition-transform duration-200 flex-shrink-0"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
+              clip-rule="evenodd"></path>
+          </svg>
+        </button>
+        <p class="faq-answer hidden mt-2 text-sm text-neutral-300 text-left">
+          Jean integrates with Anthropic's Claude CLI — you can reuse your
+          existing Claude subscription. Support for additional AI coding agents
+          like Opencode, Codex, and others is on the roadmap.
+        </p>
+      </div>
+
+      <!-- FAQ 6 -->
+      <div class="faq-item py-4">
+        <button
+          class="faq-button w-full text-left text-sm font-medium flex justify-between items-center text-white"
+          aria-expanded="false"
+        >
+          <span>How do I contribute?</span>
+          <svg
+            class="w-6 h-6 transition-transform duration-200 flex-shrink-0"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
+              clip-rule="evenodd"></path>
+          </svg>
+        </button>
+        <p class="faq-answer hidden mt-2 text-sm text-neutral-300 text-left">
+          We welcome contributions of all kinds &mdash; code, documentation, bug
+          reports, and feature requests. Check out the
+          <a href="https://github.com/coollabsio/jean" class="text-[#FCD34D] underline" target="_blank">repository's CONTRIBUTING.md</a>
+          to get started.
+        </p>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<script>
+  // FAQ accordion
+  document.querySelectorAll(".faq-button").forEach((button) => {
+    button.addEventListener("click", () => {
+      const answer = button.nextElementSibling as HTMLElement;
+      const isOpen = button.getAttribute("aria-expanded") === "true";
+
+      // Close all
+      document.querySelectorAll(".faq-button").forEach((btn) => {
+        btn.setAttribute("aria-expanded", "false");
+        const chevron = btn.querySelector("svg");
+        if (chevron) chevron.style.transform = "";
+        const ans = btn.nextElementSibling as HTMLElement;
+        if (ans) ans.classList.add("hidden");
+      });
+
+      // Toggle current
+      if (!isOpen) {
+        button.setAttribute("aria-expanded", "true");
+        const chevron = button.querySelector("svg");
+        if (chevron) chevron.style.transform = "rotate(180deg)";
+        if (answer) answer.classList.remove("hidden");
+      }
+    });
+  });
+</script>
