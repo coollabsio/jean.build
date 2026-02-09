@@ -36,37 +36,65 @@ import Layout from "../layouts/Layout.astro";
       <span class="text-neutral-400">Tested on macOS — Windows &amp; Linux <a href="https://github.com/coollabsio/jean" target="_blank" class="text-[#FCD34D] underline">testers needed</a></span>
     </div>
 
-    <!-- GitHub Link -->
-    <div class="mt-8 max-w-xl mx-auto">
-      <a
-        href="https://github.com/coollabsio/jean"
-        target="_blank"
-        class="font-mono bg-coolgray-300 px-4 py-3 rounded text-xs md:text-sm text-left flex items-center justify-between hover:bg-coolgray-400 transition-colors"
-      >
-        <div class="flex items-center gap-2">
-          <svg class="w-5 h-5 text-[#FCD34D]" fill="currentColor" viewBox="0 0 24 24">
-            <path
-              fill-rule="evenodd"
-              d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"
-              clip-rule="evenodd"
-            />
-          </svg>
-          <span>coollabsio/jean</span>
-        </div>
-        <svg
-          class="w-5 h-5 text-neutral-400"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke-width="1.5"
-          stroke="currentColor"
+    <!-- Download -->
+    <div class="mt-8 max-w-xl mx-auto relative">
+      <div class="flex">
+        <a
+          id="download-btn"
+          href="https://github.com/coollabsio/jean/releases/latest"
+          class="font-mono bg-coolgray-300 px-4 py-3 rounded-l text-xs md:text-sm text-left flex items-center justify-between hover:bg-coolgray-400 transition-colors cursor-pointer flex-1"
         >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"
-          ></path>
-        </svg>
+          <div class="flex items-center gap-2">
+            <svg
+              class="w-5 h-5 text-[#FCD34D]"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"
+              ></path>
+            </svg>
+            <span id="download-label">Download for your platform</span>
+          </div>
+          <span id="download-version" class="text-neutral-400 text-xs"></span>
+        </a>
+        <button
+          id="download-dropdown-toggle"
+          class="bg-coolgray-300 px-3 py-3 rounded-r border-l border-coolgray-400 hover:bg-coolgray-400 transition-colors cursor-pointer"
+          aria-label="Show all platforms"
+        >
+          <svg class="w-4 h-4 text-neutral-400 transition-transform duration-200" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd"></path>
+          </svg>
+        </button>
+      </div>
+      <div id="download-dropdown" class="hidden absolute left-0 right-0 mt-1 bg-coolgray-300 rounded border border-coolgray-400 overflow-hidden z-50">
+        <div id="download-dropdown-list" class="divide-y divide-coolgray-400 text-xs md:text-sm font-mono"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Screenshots -->
+  <section class="mt-4 pb-10">
+    <div class="grid grid-cols-1 gap-4">
+      <a href="/screenshots/SCR-20260209-nigu.png" target="_blank" class="block overflow-hidden rounded-xl border border-coolgray-300 hover:border-[#FCD34D]/40 transition-colors">
+        <img src="/screenshots/SCR-20260209-nigu.png" alt="Jean project overview with sessions and worktrees" loading="lazy" class="w-full" />
       </a>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <a href="/screenshots/SCR-20260209-ninl.png" target="_blank" class="block overflow-hidden rounded-xl border border-coolgray-300 hover:border-[#FCD34D]/40 transition-colors">
+          <img src="/screenshots/SCR-20260209-ninl.png" alt="AI agent resolving merge conflicts" loading="lazy" class="w-full" />
+        </a>
+        <a href="/screenshots/SCR-20260209-niug.png" target="_blank" class="block overflow-hidden rounded-xl border border-coolgray-300 hover:border-[#FCD34D]/40 transition-colors">
+          <img src="/screenshots/SCR-20260209-niug.png" alt="Uncommitted changes diff view" loading="lazy" class="w-full" />
+        </a>
+        <a href="/screenshots/SCR-20260209-njel.png" target="_blank" class="block overflow-hidden rounded-xl border border-coolgray-300 hover:border-[#FCD34D]/40 transition-colors">
+          <img src="/screenshots/SCR-20260209-njel.png" alt="Code editor with AI assistance" loading="lazy" class="w-full" />
+        </a>
+      </div>
     </div>
   </section>
 
@@ -311,7 +339,8 @@ import Layout from "../layouts/Layout.astro";
         <p class="faq-answer hidden mt-2 text-sm text-neutral-300 text-left">
           Yes, 100%. Jean is open source under the Apache 2.0 license. There
           are no paid tiers, no feature gates, and no usage limits. You bring
-          your own Claude API key.
+          your own Claude subscription. If you'd like to support development,
+          consider <a href="/sponsorships" class="text-[#FCD34D] underline">sponsoring us</a>.
         </p>
       </div>
 
@@ -446,4 +475,125 @@ import Layout from "../layouts/Layout.astro";
       }
     });
   });
+
+  // OS-aware download button
+  const btn = document.getElementById("download-btn") as HTMLAnchorElement;
+  const label = document.getElementById("download-label");
+  const version = document.getElementById("download-version");
+  const dropdownToggle = document.getElementById("download-dropdown-toggle");
+  const dropdown = document.getElementById("download-dropdown");
+  const dropdownList = document.getElementById("download-dropdown-list");
+
+  const ua = navigator.userAgent.toLowerCase();
+  let os = "unknown";
+  if (ua.includes("mac")) os = "mac";
+  else if (ua.includes("win")) os = "windows";
+  else if (ua.includes("linux")) os = "linux";
+
+  const osLabels: Record<string, string> = {
+    mac: "Download for macOS",
+    windows: "Download for Windows",
+    linux: "Download for Linux",
+    unknown: "Download Latest Release",
+  };
+
+  if (label) label.textContent = osLabels[os];
+
+  // Friendly names for assets
+  const assetLabels: Record<string, string> = {
+    ".dmg": "macOS (DMG)",
+    ".app.tar.gz": "macOS (tar.gz)",
+    "-setup.exe": "Windows (EXE)",
+    ".msi": "Windows (MSI)",
+    ".AppImage": "Linux (AppImage)",
+    ".deb": "Linux (DEB)",
+    ".rpm": "Linux (RPM)",
+  };
+
+  const assetOrder = [".dmg", ".app.tar.gz", "-setup.exe", ".msi", ".AppImage", ".deb", ".rpm"];
+
+  // Toggle dropdown
+  if (dropdownToggle && dropdown) {
+    dropdownToggle.addEventListener("click", () => {
+      const isOpen = !dropdown.classList.contains("hidden");
+      dropdown.classList.toggle("hidden");
+      const chevron = dropdownToggle.querySelector("svg");
+      if (chevron) chevron.style.transform = isOpen ? "" : "rotate(180deg)";
+    });
+
+    // Close on outside click
+    document.addEventListener("click", (e) => {
+      if (!(e.target as Element).closest("#download-dropdown-toggle") && !(e.target as Element).closest("#download-dropdown")) {
+        dropdown.classList.add("hidden");
+        const chevron = dropdownToggle.querySelector("svg");
+        if (chevron) chevron.style.transform = "";
+      }
+    });
+  }
+
+  // Cache release data in localStorage (1 hour TTL)
+  const CACHE_KEY = "jean-release";
+  const CACHE_TTL = 60 * 60 * 1000; // 1 hour
+
+  function applyReleaseData(data: { tag_name?: string; assets?: { name: string; browser_download_url: string }[] }) {
+    if (version && data.tag_name) {
+      version.textContent = data.tag_name;
+    }
+    const assets = data.assets || [];
+
+    let asset: { name: string; browser_download_url: string } | undefined;
+    if (os === "mac") {
+      asset = assets.find((a) => a.name.endsWith(".dmg"));
+    } else if (os === "windows") {
+      asset = assets.find((a) => a.name.endsWith("-setup.exe"));
+    } else if (os === "linux") {
+      asset = assets.find((a) => a.name.endsWith(".AppImage"));
+    }
+
+    if (asset && btn) {
+      btn.href = asset.browser_download_url;
+    }
+
+    if (dropdownList) {
+      dropdownList.innerHTML = "";
+      const sorted = assetOrder
+        .map((ext) => assets.find((a) => a.name.endsWith(ext)))
+        .filter(Boolean) as { name: string; browser_download_url: string }[];
+
+      sorted.forEach((a) => {
+        const ext = assetOrder.find((e) => a.name.endsWith(e)) || a.name;
+        const link = document.createElement("a");
+        link.href = a.browser_download_url;
+        link.className = "flex items-center justify-between px-4 py-2.5 hover:bg-coolgray-400 transition-colors text-white";
+        link.innerHTML = `<span>${assetLabels[ext] || a.name}</span><span class="text-neutral-400 text-xs">${a.name}</span>`;
+        dropdownList.appendChild(link);
+      });
+    }
+  }
+
+  let cached: { ts: number; data: any } | null = null;
+  try {
+    const raw = localStorage.getItem(CACHE_KEY);
+    if (raw) cached = JSON.parse(raw);
+  } catch {}
+
+  if (cached && Date.now() - cached.ts < CACHE_TTL) {
+    applyReleaseData(cached.data);
+  } else {
+    fetch("https://api.github.com/repos/coollabsio/jean/releases/latest")
+      .then((res) => res.json())
+      .then((data) => {
+        try {
+          localStorage.setItem(CACHE_KEY, JSON.stringify({ ts: Date.now(), data }));
+        } catch {}
+        applyReleaseData(data);
+      })
+      .catch(() => {
+        if (cached) {
+          applyReleaseData(cached.data);
+        } else if (btn) {
+          btn.href = "https://github.com/coollabsio/jean/releases/latest";
+        }
+      });
+  }
 </script>
