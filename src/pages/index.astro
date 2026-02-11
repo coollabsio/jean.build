@@ -539,6 +539,7 @@ import Layout from "../layouts/Layout.astro";
   };
 
   const assetOrder = [".dmg", ".app.tar.gz", "-setup.exe", ".msi", ".AppImage", ".deb", ".rpm"];
+  const recommendedExts = new Set([".dmg", "-setup.exe", ".AppImage"]);
 
   // Toggle dropdown
   if (dropdownToggle && dropdown) {
@@ -559,9 +560,9 @@ import Layout from "../layouts/Layout.astro";
     });
   }
 
-  // Cache release data in localStorage (1 hour TTL)
-  const CACHE_KEY = "jean-release";
-  const CACHE_TTL = 60 * 60 * 1000; // 1 hour
+  // Cache release data in localStorage (10 min TTL)
+  const CACHE_KEY = "jean-release-v2";
+  const CACHE_TTL = 10 * 60 * 1000; // 10 minutes
 
   function applyReleaseData(data: { tag_name?: string; assets?: { name: string; browser_download_url: string }[] }) {
     if (version && data.tag_name) {
@@ -593,7 +594,9 @@ import Layout from "../layouts/Layout.astro";
         const link = document.createElement("a");
         link.href = a.browser_download_url;
         link.className = "flex items-center justify-between px-4 py-2.5 hover:bg-coolgray-400 transition-colors text-white";
-        link.innerHTML = `<span>${assetLabels[ext] || a.name}</span><span class="text-neutral-400 text-xs">${a.name}</span>`;
+        const recommended = recommendedExts.has(ext);
+        const badge = recommended ? `<span class="text-emerald-400 text-xs ml-2">Recommended</span>` : "";
+        link.innerHTML = `<span>${assetLabels[ext] || a.name}${badge}</span><span class="text-neutral-400 text-xs">${a.name}</span>`;
         dropdownList.appendChild(link);
       });
     }
@@ -608,13 +611,18 @@ import Layout from "../layouts/Layout.astro";
   if (cached && Date.now() - cached.ts < CACHE_TTL) {
     applyReleaseData(cached.data);
   } else {
-    fetch("https://api.github.com/repos/coollabsio/jean/releases/latest")
+    fetch("https://api.github.com/repos/coollabsio/jean/releases?per_page=5")
       .then((res) => res.json())
-      .then((data) => {
-        try {
-          localStorage.setItem(CACHE_KEY, JSON.stringify({ ts: Date.now(), data }));
-        } catch {}
-        applyReleaseData(data);
+      .then((releases) => {
+        const data = releases.find((r: any) => r.assets && r.assets.length > 0);
+        if (data) {
+          try {
+            localStorage.setItem(CACHE_KEY, JSON.stringify({ ts: Date.now(), data }));
+          } catch {}
+          applyReleaseData(data);
+        } else if (btn) {
+          btn.href = "https://github.com/coollabsio/jean/releases/latest";
+        }
       })
       .catch(() => {
         if (cached) {
