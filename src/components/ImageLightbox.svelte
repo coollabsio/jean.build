@@ -15,6 +15,7 @@
   let translateX = $state(0);
   let translateY = $state(0);
   let isDragging = $state(false);
+  let isPortrait = $state(false);
 
   let isZoomed = $derived(scale > 1.05);
 
@@ -25,9 +26,14 @@
   let initialPinchDistance = 0;
   let initialPinchScale = 1;
 
+  function checkPortrait() {
+    isPortrait = window.innerWidth < 768 && window.innerHeight > window.innerWidth;
+  }
+
   function openLightbox(index: number) {
     currentIndex = index;
     resetZoom();
+    checkPortrait();
     dialogRef?.showModal();
     preloadAdjacent();
   }
@@ -178,10 +184,12 @@
 
     window.addEventListener("open-lightbox", handler);
     window.addEventListener("keydown", handleKeydown);
+    window.addEventListener("resize", checkPortrait);
 
     return () => {
       window.removeEventListener("open-lightbox", handler);
       window.removeEventListener("keydown", handleKeydown);
+      window.removeEventListener("resize", checkPortrait);
     };
   });
 </script>
@@ -192,21 +200,35 @@
   class="modal"
   onclose={resetZoom}
 >
-  <div class="fixed inset-0 z-[60] flex items-center justify-center pointer-events-none backdrop-blur-md bg-black/70">
+  <div
+    class="fixed inset-0 z-[60] flex items-center justify-center pointer-events-none backdrop-blur-md bg-black/70"
+    style={isPortrait ? `transform: rotate(90deg); transform-origin: center center; width: 100vh; height: 100vw; top: 50%; left: 50%; margin-top: calc(-50vw); margin-left: calc(-50vh);` : ''}
+  >
     <!-- Top bar: counter + close -->
     <div class="absolute top-4 left-0 right-0 flex items-center justify-between px-4 md:px-8 pointer-events-auto z-20">
       <div class="bg-black/70 text-white text-sm px-3 py-1 rounded-full shadow-lg ring-1 ring-white/20">
         {currentIndex + 1} / {images.length}
       </div>
-      <button
-        onclick={closeLightbox}
-        class="w-10 h-10 flex items-center justify-center rounded-full bg-black/70 text-white hover:bg-black/90 transition-colors cursor-pointer shadow-lg ring-1 ring-white/20"
-        aria-label="Close"
-      >
-        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-        </svg>
-      </button>
+      <div class="flex items-center gap-2">
+        <button
+          onclick={() => isPortrait = !isPortrait}
+          class="w-10 h-10 flex items-center justify-center rounded-full bg-black/70 text-white hover:bg-black/90 transition-colors cursor-pointer shadow-lg ring-1 ring-white/20 md:hidden"
+          aria-label="Toggle rotation"
+        >
+          <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 12c0-1.232-.046-2.453-.138-3.662a4.006 4.006 0 00-3.7-3.7 48.678 48.678 0 00-7.324 0 4.006 4.006 0 00-3.7 3.7c-.017.22-.032.441-.046.662M19.5 12l3-3m-3 3l-3-3m-12 3c0 1.232.046 2.453.138 3.662a4.006 4.006 0 003.7 3.7 48.656 48.656 0 007.324 0 4.006 4.006 0 003.7-3.7c.017-.22.032-.441.046-.662M4.5 12l3 3m-3-3l-3 3" />
+          </svg>
+        </button>
+        <button
+          onclick={closeLightbox}
+          class="w-10 h-10 flex items-center justify-center rounded-full bg-black/70 text-white hover:bg-black/90 transition-colors cursor-pointer shadow-lg ring-1 ring-white/20"
+          aria-label="Close"
+        >
+          <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
     </div>
 
     <!-- Nav: Previous -->
@@ -236,7 +258,7 @@
     <!-- Image viewport -->
     <div
       bind:this={viewportRef}
-      class="flex items-center justify-center select-none overflow-hidden pointer-events-auto mx-16 md:mx-20 my-16"
+      class="flex items-center justify-center select-none overflow-hidden pointer-events-auto mx-4 md:mx-20 my-16"
       class:cursor-zoom-in={!isZoomed}
       class:cursor-grab={isZoomed && !isDragging}
       class:cursor-grabbing={isDragging}
@@ -256,7 +278,7 @@
         src={images[currentIndex]?.src}
         alt={images[currentIndex]?.alt}
         draggable="false"
-        class="max-w-full max-h-[80vh] object-contain rounded-lg"
+        class="max-w-full max-h-[85vh] object-contain rounded-lg"
         style="transform: scale({scale}) translate({translateX / scale}px, {translateY / scale}px); transition: {isDragging || isTouchDragging ? 'none' : 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)'};"
         onclick={handleImageClick}
       />
