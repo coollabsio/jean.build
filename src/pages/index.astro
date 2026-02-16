@@ -1,5 +1,13 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import ImageLightbox from "../components/ImageLightbox.svelte";
+
+const screenshots = [
+  { src: "/screenshots/SCR-20260209-nigu.png", alt: "Jean project overview with sessions and worktrees" },
+  { src: "/screenshots/SCR-20260209-ninl.png", alt: "AI agent resolving merge conflicts" },
+  { src: "/screenshots/SCR-20260209-niug.png", alt: "Uncommitted changes diff view" },
+  { src: "/screenshots/SCR-20260209-njel.png", alt: "Code editor with AI assistance" },
+];
 ---
 
 <Layout>
@@ -81,21 +89,22 @@ import Layout from "../layouts/Layout.astro";
   <!-- Screenshots -->
   <section class="mt-4 pb-10 px-4">
     <div class="grid grid-cols-1 gap-4">
-      <a href="/screenshots/SCR-20260209-nigu.png" target="_blank" class="block overflow-hidden rounded-xl border border-coolgray-300 hover:border-[#FCD34D]/40 transition-colors">
-        <img src="/screenshots/SCR-20260209-nigu.png" alt="Jean project overview with sessions and worktrees" loading="lazy" class="w-full" />
-      </a>
+      <button data-lightbox="0" class="block overflow-hidden rounded-xl border border-coolgray-300 hover:border-[#FCD34D]/40 transition-colors cursor-pointer">
+        <img src={screenshots[0].src} alt={screenshots[0].alt} loading="lazy" class="w-full" />
+      </button>
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <a href="/screenshots/SCR-20260209-ninl.png" target="_blank" class="block overflow-hidden rounded-xl border border-coolgray-300 hover:border-[#FCD34D]/40 transition-colors">
-          <img src="/screenshots/SCR-20260209-ninl.png" alt="AI agent resolving merge conflicts" loading="lazy" class="w-full" />
-        </a>
-        <a href="/screenshots/SCR-20260209-niug.png" target="_blank" class="block overflow-hidden rounded-xl border border-coolgray-300 hover:border-[#FCD34D]/40 transition-colors">
-          <img src="/screenshots/SCR-20260209-niug.png" alt="Uncommitted changes diff view" loading="lazy" class="w-full" />
-        </a>
-        <a href="/screenshots/SCR-20260209-njel.png" target="_blank" class="block overflow-hidden rounded-xl border border-coolgray-300 hover:border-[#FCD34D]/40 transition-colors">
-          <img src="/screenshots/SCR-20260209-njel.png" alt="Code editor with AI assistance" loading="lazy" class="w-full" />
-        </a>
+        <button data-lightbox="1" class="block overflow-hidden rounded-xl border border-coolgray-300 hover:border-[#FCD34D]/40 transition-colors cursor-pointer">
+          <img src={screenshots[1].src} alt={screenshots[1].alt} loading="lazy" class="w-full" />
+        </button>
+        <button data-lightbox="2" class="block overflow-hidden rounded-xl border border-coolgray-300 hover:border-[#FCD34D]/40 transition-colors cursor-pointer">
+          <img src={screenshots[2].src} alt={screenshots[2].alt} loading="lazy" class="w-full" />
+        </button>
+        <button data-lightbox="3" class="block overflow-hidden rounded-xl border border-coolgray-300 hover:border-[#FCD34D]/40 transition-colors cursor-pointer">
+          <img src={screenshots[3].src} alt={screenshots[3].alt} loading="lazy" class="w-full" />
+        </button>
       </div>
     </div>
+    <ImageLightbox images={screenshots} client:load />
   </section>
 
   <!-- Features Section -->
@@ -479,6 +488,14 @@ import Layout from "../layouts/Layout.astro";
 </Layout>
 
 <script>
+  // Lightbox triggers
+  document.querySelectorAll<HTMLElement>("[data-lightbox]").forEach((el) => {
+    el.addEventListener("click", () => {
+      const index = parseInt(el.dataset.lightbox || "0", 10);
+      window.dispatchEvent(new CustomEvent("open-lightbox", { detail: { index } }));
+    });
+  });
+
   // FAQ accordion
   document.querySelectorAll(".faq-button").forEach((button) => {
     button.addEventListener("click", () => {
