@@ -530,7 +530,6 @@ import Layout from "../layouts/Layout.astro";
   // Friendly names for assets
   const assetLabels: Record<string, string> = {
     ".dmg": "macOS (DMG)",
-    ".app.tar.gz": "macOS (tar.gz)",
     "-setup.exe": "Windows (EXE)",
     ".msi": "Windows (MSI)",
     ".AppImage": "Linux (AppImage)",
@@ -538,7 +537,7 @@ import Layout from "../layouts/Layout.astro";
     ".rpm": "Linux (RPM)",
   };
 
-  const assetOrder = [".dmg", ".app.tar.gz", "-setup.exe", ".msi", ".AppImage", ".deb", ".rpm"];
+  const assetOrder = [".dmg", "-setup.exe", ".msi", ".AppImage", ".deb", ".rpm"];
   const recommendedExts = new Set([".dmg", "-setup.exe", ".AppImage"]);
 
   // Toggle dropdown
@@ -561,72 +560,79 @@ import Layout from "../layouts/Layout.astro";
   }
 
   // Cache release data in localStorage (10 min TTL)
-  const CACHE_KEY = "jean-release-v2";
-  const CACHE_TTL = 10 * 60 * 1000; // 10 minutes
+  const CACHE_KEY = "jean-release-v3";
+  const CACHE_TTL = 10 * 60 * 1000;
 
-  function applyReleaseData(data: { tag_name?: string; assets?: { name: string; browser_download_url: string }[] }) {
-    if (version && data.tag_name) {
-      version.textContent = data.tag_name;
-    }
-    const assets = data.assets || [];
+  type Asset = { name: string; browser_download_url: string };
+  type Release = { tag_name: string; assets: Asset[] };
+  type MergedAsset = { ext: string; name: string; url: string; tag: string; isOlder: boolean };
 
-    let asset: { name: string; browser_download_url: string } | undefined;
-    if (os === "mac") {
-      asset = assets.find((a) => a.name.endsWith(".dmg"));
-    } else if (os === "windows") {
-      asset = assets.find((a) => a.name.endsWith("-setup.exe"));
-    } else if (os === "linux") {
-      asset = assets.find((a) => a.name.endsWith(".AppImage"));
+  function mergeReleases(releases: Release[]): { latestTag: string; merged: Record<string, MergedAsset> } {
+    const latestTag = releases[0]?.tag_name || "";
+    const merged: Record<string, MergedAsset> = {};
+    for (const ext of assetOrder) {
+      for (const rel of releases) {
+        const asset = (rel.assets || []).find((a) => a.name.endsWith(ext));
+        if (asset) {
+          merged[ext] = { ext, name: asset.name, url: asset.browser_download_url, tag: rel.tag_name, isOlder: rel.tag_name !== latestTag };
+          break;
+        }
+      }
     }
+    return { latestTag, merged };
+  }
 
-    if (asset && btn) {
-      btn.href = asset.browser_download_url;
-    }
+  function applyMergedData(latestTag: string, merged: Record<string, MergedAsset>) {
+    if (version) version.textContent = latestTag;
+
+    const osExtMap: Record<string, string> = { mac: ".dmg", windows: "-setup.exe", linux: ".AppImage" };
+    const primary = merged[osExtMap[os]];
+    if (primary && btn) btn.href = primary.url;
 
     if (dropdownList) {
       dropdownList.innerHTML = "";
-      const sorted = assetOrder
-        .map((ext) => assets.find((a) => a.name.endsWith(ext)))
-        .filter(Boolean) as { name: string; browser_download_url: string }[];
-
-      sorted.forEach((a) => {
-        const ext = assetOrder.find((e) => a.name.endsWith(e)) || a.name;
+      for (const ext of assetOrder) {
+        const entry = merged[ext];
+        if (!entry) continue;
         const link = document.createElement("a");
-        link.href = a.browser_download_url;
-        link.className = "flex items-center justify-between px-4 py-2.5 hover:bg-coolgray-400 transition-colors text-white";
+        link.href = entry.url;
+        link.className = `flex ${entry.isOlder ? "items-start" : "items-center"} justify-between px-4 py-2.5 hover:bg-coolgray-400 transition-colors text-white`;
         const recommended = recommendedExts.has(ext);
         const badge = recommended ? `<span class="text-emerald-400 text-xs ml-2">Recommended</span>` : "";
-        link.innerHTML = `<span>${assetLabels[ext] || a.name}${badge}</span><span class="text-neutral-400 text-xs">${a.name}</span>`;
+        const building = entry.isOlder ? `<div class="text-[#FCD34D] text-xs">Currently building ${latestTag}...</div>` : "";
+        const filename = entry.isOlder ? `${entry.name} (${entry.tag})` : entry.name;
+        link.innerHTML = `<div><div>${assetLabels[ext] || entry.name}${badge}</div>${building}</div><span class="text-neutral-400 text-xs">${filename}</span>`;
         dropdownList.appendChild(link);
-      });
+      }
     }
   }
 
-  let cached: { ts: number; data: any } | null = null;
+  let cached: { ts: number; releases: Release[] } | null = null;
   try {
     const raw = localStorage.getItem(CACHE_KEY);
     if (raw) cached = JSON.parse(raw);
   } catch {}
 
   if (cached && Date.now() - cached.ts < CACHE_TTL) {
-    applyReleaseData(cached.data);
+    const { latestTag, merged } = mergeReleases(cached.releases);
+    applyMergedData(latestTag, merged);
   } else {
     fetch("https://api.github.com/repos/coollabsio/jean/releases?per_page=5")
       .then((res) => res.json())
-      .then((releases) => {
-        const data = releases.find((r: any) => r.assets && r.assets.length > 0);
-        if (data) {
-          try {
-            localStorage.setItem(CACHE_KEY, JSON.stringify({ ts: Date.now(), data }));
-          } catch {}
-          applyReleaseData(data);
+      .then((releases: Release[]) => {
+        const valid = releases.filter((r) => r.assets && r.assets.length > 0);
+        if (valid.length) {
+          try { localStorage.setItem(CACHE_KEY, JSON.stringify({ ts: Date.now(), releases: valid })); } catch {}
+          const { latestTag, merged } = mergeReleases(valid);
+          applyMergedData(latestTag, merged);
         } else if (btn) {
           btn.href = "https://github.com/coollabsio/jean/releases/latest";
         }
       })
       .catch(() => {
         if (cached) {
-          applyReleaseData(cached.data);
+          const { latestTag, merged } = mergeReleases(cached.releases);
+          applyMergedData(latestTag, merged);
         } else if (btn) {
           btn.href = "https://github.com/coollabsio/jean/releases/latest";
         }
