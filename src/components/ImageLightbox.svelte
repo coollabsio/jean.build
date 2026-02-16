@@ -16,6 +16,8 @@
   let translateY = $state(0);
   let isDragging = $state(false);
   let isPortrait = $state(false);
+  let viewportW = $state(0);
+  let viewportH = $state(0);
 
   let isZoomed = $derived(scale > 1.05);
 
@@ -27,7 +29,9 @@
   let initialPinchScale = 1;
 
   function checkPortrait() {
-    isPortrait = window.innerWidth < 768 && window.innerHeight > window.innerWidth;
+    viewportW = window.innerWidth;
+    viewportH = window.innerHeight;
+    isPortrait = viewportW < 768 && viewportH > viewportW;
   }
 
   function openLightbox(index: number) {
@@ -202,7 +206,7 @@
 >
   <div
     class="fixed inset-0 z-[60] flex items-center justify-center pointer-events-none backdrop-blur-md bg-black/70"
-    style={isPortrait ? `transform: rotate(90deg); transform-origin: center center; width: 100vh; height: 100vw; top: 50%; left: 50%; margin-top: calc(-50vw); margin-left: calc(-50vh);` : ''}
+    style={isPortrait ? `transform: rotate(90deg); transform-origin: center center; width: ${viewportH}px; height: ${viewportW}px; top: 50%; left: 50%; margin-top: -${viewportW / 2}px; margin-left: -${viewportH / 2}px;` : ''}
   >
     <!-- Top bar: counter + close -->
     <div class="absolute top-4 left-0 right-0 flex items-center justify-between px-4 md:px-8 pointer-events-auto z-20">
@@ -278,8 +282,8 @@
         src={images[currentIndex]?.src}
         alt={images[currentIndex]?.alt}
         draggable="false"
-        class="max-w-full max-h-[85vh] object-contain rounded-lg"
-        style="transform: scale({scale}) translate({translateX / scale}px, {translateY / scale}px); transition: {isDragging || isTouchDragging ? 'none' : 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)'};"
+        class="max-w-full object-contain rounded-lg"
+        style="max-height: {isPortrait ? `${viewportW - 128}px` : '85vh'}; transform: scale({scale}) translate({translateX / scale}px, {translateY / scale}px); transition: {isDragging || isTouchDragging ? 'none' : 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)'};"
         onclick={handleImageClick}
       />
     </div>
