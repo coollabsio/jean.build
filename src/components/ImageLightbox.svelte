@@ -73,7 +73,6 @@
     if (isDragging) return;
     if (!isZoomed) {
       scale = 2.5;
-      // Zoom toward click position
       if (viewportRef) {
         const rect = viewportRef.getBoundingClientRect();
         const relX = (e.clientX - rect.left) / rect.width - 0.5;
