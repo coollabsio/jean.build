@@ -43,7 +43,7 @@ const {
     <!-- Analytics -->
     <script defer data-domain="jean.build" src="https://analytics.coollabs.io/js/script.js"></script>
   </head>
-  <body class="bg-[#101010] text-white font-sans antialiased">
+  <body class="bg-[#101010] text-white font-sans antialiased leading-relaxed">
     <Navigation />
     <main class="max-w-6xl mx-auto">
       <slot />
@@ -74,5 +74,8 @@ const {
     scroll-behavior: smooth;
     background-color: #101010;
     color: #fff;
+  }
+  .button {
+    @apply bg-coolgray-300 hover:bg-coolgray-400 text-white px-4 py-2 text-base font-semibold leading-6 rounded;
   }
 </style>
