@@ -7,6 +7,10 @@ import sitemap from '@astrojs/sitemap';
 export default defineConfig({
   site: 'https://jean.build',
   integrations: [tailwind(), svelte(), sitemap()],
+  trailingSlash: 'never',
+  build: {
+    format: 'file',
+  },
   server: {
     host: '0.0.0.0',
   },
