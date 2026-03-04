@@ -3,10 +3,14 @@ import Layout from "../layouts/Layout.astro";
 import ImageLightbox from "../components/ImageLightbox.svelte";
 
 const screenshots = [
-  { src: "/screenshots/SCR-20260209-nigu.png", alt: "Jean project overview with sessions and worktrees" },
-  { src: "/screenshots/SCR-20260209-ninl.png", alt: "AI agent resolving merge conflicts" },
-  { src: "/screenshots/SCR-20260209-niug.png", alt: "Uncommitted changes diff view" },
-  { src: "/screenshots/SCR-20260209-njel.png", alt: "Code editor with AI assistance" },
+  { src: "/screenshots/SCR-20260304-krym.png", alt: "Project overview with worktrees, sessions, and review status" },
+  { src: "/screenshots/SCR-20260304-ksgh.png", alt: "AI agent resolving merge conflicts automatically" },
+  { src: "/screenshots/SCR-20260304-ksjn.png", alt: "Code review with uncommitted changes and diff view" },
+  { src: "/screenshots/SCR-20260304-ksnq.png", alt: "Commit history with file changes and code diff" },
+  { src: "/screenshots/SCR-20260304-kstl.png", alt: "New session dialog with PR list and context loading" },
+  { src: "/screenshots/SCR-20260304-ktab.png", alt: "Magic commands palette for git operations" },
+  { src: "/screenshots/SCR-20260304-ktwr.png", alt: "AI-powered code review with warnings and suggestions" },
+  { src: "/screenshots/SCR-20260304-kuhk.png", alt: "Magic prompts settings with customizable AI instructions" },
 ];
 ---
 
@@ -103,6 +107,20 @@ const screenshots = [
           <img src={screenshots[3].src} alt={screenshots[3].alt} loading="lazy" class="w-full" />
         </button>
       </div>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <button data-lightbox="4" class="block overflow-hidden rounded-xl border border-coolgray-300 hover:border-[#FCD34D]/40 transition-colors cursor-pointer">
+          <img src={screenshots[4].src} alt={screenshots[4].alt} loading="lazy" class="w-full" />
+        </button>
+        <button data-lightbox="5" class="block overflow-hidden rounded-xl border border-coolgray-300 hover:border-[#FCD34D]/40 transition-colors cursor-pointer">
+          <img src={screenshots[5].src} alt={screenshots[5].alt} loading="lazy" class="w-full" />
+        </button>
+        <button data-lightbox="6" class="block overflow-hidden rounded-xl border border-coolgray-300 hover:border-[#FCD34D]/40 transition-colors cursor-pointer">
+          <img src={screenshots[6].src} alt={screenshots[6].alt} loading="lazy" class="w-full" />
+        </button>
+      </div>
+      <button data-lightbox="7" class="block overflow-hidden rounded-xl border border-coolgray-300 hover:border-[#FCD34D]/40 transition-colors cursor-pointer">
+        <img src={screenshots[7].src} alt={screenshots[7].alt} loading="lazy" class="w-full" />
+      </button>
     </div>
     <ImageLightbox images={screenshots} client:load />
   </section>
