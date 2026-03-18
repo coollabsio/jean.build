@@ -629,13 +629,16 @@ const screenshots = [
     ".dmg": "macOS (DMG)",
     "-setup.exe": "Windows (EXE)",
     ".msi": "Windows (MSI)",
-    ".AppImage": "Linux (AppImage)",
-    ".deb": "Linux (DEB)",
-    ".rpm": "Linux (RPM)",
+    "_amd64.AppImage": "Linux x64 (AppImage)",
+    "_aarch64.AppImage": "Linux ARM (AppImage)",
+    "_amd64.deb": "Linux x64 (DEB)",
+    "_arm64.deb": "Linux ARM (DEB)",
+    "x86_64.rpm": "Linux x64 (RPM)",
+    "aarch64.rpm": "Linux ARM (RPM)",
   };
 
-  const assetOrder = [".dmg", "-setup.exe", ".msi", ".AppImage", ".deb", ".rpm"];
-  const recommendedExts = new Set([".dmg", "-setup.exe", ".AppImage"]);
+  const assetOrder = [".dmg", "-setup.exe", ".msi", "_amd64.AppImage", "_aarch64.AppImage", "_amd64.deb", "_arm64.deb", "x86_64.rpm", "aarch64.rpm"];
+  const recommendedExts = new Set([".dmg", "-setup.exe", "_amd64.AppImage", "_aarch64.AppImage"]);
 
   // Toggle dropdown
   if (dropdownToggle && dropdown) {
@@ -657,7 +660,7 @@ const screenshots = [
   }
 
   // Cache release data in localStorage (10 min TTL)
-  const CACHE_KEY = "jean-release-v3";
+  const CACHE_KEY = "jean-release-v4";
   const CACHE_TTL = 10 * 60 * 1000;
 
   type Asset = { name: string; browser_download_url: string };
@@ -682,7 +685,8 @@ const screenshots = [
   function applyMergedData(latestTag: string, merged: Record<string, MergedAsset>) {
     if (version) version.textContent = latestTag;
 
-    const osExtMap: Record<string, string> = { mac: ".dmg", windows: "-setup.exe", linux: ".AppImage" };
+    const isArm = /aarch64|arm/i.test(navigator.platform);
+    const osExtMap: Record<string, string> = { mac: ".dmg", windows: "-setup.exe", linux: isArm ? "_aarch64.AppImage" : "_amd64.AppImage" };
     const primary = merged[osExtMap[os]];
     if (primary && btn) btn.href = primary.url;
 
