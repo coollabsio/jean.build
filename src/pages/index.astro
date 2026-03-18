@@ -615,10 +615,12 @@ const screenshots = [
   else if (ua.includes("win")) os = "windows";
   else if (ua.includes("linux")) os = "linux";
 
+  const isArm = /aarch64|arm/i.test(navigator.platform);
+
   const osLabels: Record<string, string> = {
     mac: "Download for macOS",
     windows: "Download for Windows",
-    linux: "Download for Linux",
+    linux: isArm ? "Download for Linux (ARM)" : "Download for Linux (x64)",
     unknown: "Download Latest Release",
   };
 
@@ -685,7 +687,6 @@ const screenshots = [
   function applyMergedData(latestTag: string, merged: Record<string, MergedAsset>) {
     if (version) version.textContent = latestTag;
 
-    const isArm = /aarch64|arm/i.test(navigator.platform);
     const osExtMap: Record<string, string> = { mac: ".dmg", windows: "-setup.exe", linux: isArm ? "_aarch64.AppImage" : "_amd64.AppImage" };
     const primary = merged[osExtMap[os]];
     if (primary && btn) btn.href = primary.url;
