@@ -1,0 +1,72 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { marked } from "marked";
+
+const res = await fetch("https://api.github.com/repos/coollabsio/jean/releases", {
+  headers: {
+    "Accept": "application/vnd.github.v3+json",
+    "User-Agent": "jean-landing",
+  },
+});
+const releases = await res.json();
+
+const parsedReleases = await Promise.all(
+  releases.map(async (release: any) => ({
+    name: release.name || release.tag_name,
+    tag: release.tag_name,
+    date: release.published_at,
+    url: release.html_url,
+    body: await marked.parse(release.body || ""),
+  }))
+);
+---
+
+<Layout
+  title="Changelog | Jean"
+  description="Latest releases and updates for Jean, a dev environment for AI agents."
+>
+  <section class="max-w-3xl mx-auto px-4 pt-12 md:pt-24 pb-16">
+    <div class="text-center mb-12">
+      <h1 class="text-3xl md:text-6xl font-bold tracking-tight text-white">
+        Changelog<span class="text-[#FCD34D]">.</span>
+      </h1>
+      <p class="text-base pt-2 text-neutral-400">
+        Latest releases from the <a href="https://github.com/coollabsio/jean" class="text-[#FCD34D] hover:underline" target="_blank" rel="noopener">GitHub repository</a>.
+      </p>
+    </div>
+
+    <div class="space-y-12">
+      {parsedReleases.map((release: any) => (
+        <article class="border-l-2 border-[#FCD34D]/40 pl-6 relative">
+          <div class="absolute -left-[7px] top-1 w-3 h-3 rounded-full bg-[#FCD34D]" />
+          <div class="flex flex-wrap items-baseline gap-3 mb-3">
+            <a
+              href={release.url}
+              target="_blank"
+              rel="noopener"
+              class="text-xl md:text-2xl font-semibold text-white hover:text-[#FCD34D] transition-colors"
+            >
+              {release.name}
+            </a>
+            <time class="text-sm text-neutral-500">
+              {new Date(release.date).toLocaleDateString("en-US", {
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+              })}
+            </time>
+          </div>
+          <div class="prose prose-invert prose-sm max-w-none
+            prose-headings:text-white prose-headings:font-semibold prose-headings:mt-4 prose-headings:mb-2
+            prose-p:text-neutral-400 prose-p:leading-relaxed
+            prose-a:text-[#FCD34D] prose-a:no-underline hover:prose-a:underline
+            prose-li:text-neutral-400
+            prose-code:text-neutral-300 prose-code:bg-neutral-800 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded
+            prose-strong:text-white"
+            set:html={release.body}
+          />
+        </article>
+      ))}
+    </div>
+  </section>
+</Layout>
