@@ -13,7 +13,7 @@
     </a>
 
     <!-- Desktop Nav -->
-    <div class="hidden md:flex items-center gap-1">
+    <div class="hidden xl:flex items-center gap-1">
       <a
         href="/#features"
         class="text-white text-base hover:bg-coolgray-200 p-2 px-3 rounded flex items-center gap-2 transition-colors"
@@ -32,6 +32,26 @@
           ></path>
         </svg>
         Features
+      </a>
+      <a
+        href="/docs"
+        class="text-white text-base hover:bg-coolgray-200 p-2 px-3 rounded flex items-center gap-2 transition-colors"
+      >
+        <svg
+          class="w-5 h-5 text-[#FCD34D]"
+          viewBox="0 0 256 256"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <g fill="currentColor">
+            <path
+              d="M208 32v160H72a24 24 0 0 0-24 24V56a24 24 0 0 1 24-24Z"
+              opacity=".2"></path>
+            <path
+              d="M208 24H72a32 32 0 0 0-32 32v168a8 8 0 0 0 8 8h144a8 8 0 0 0 0-16H56a16 16 0 0 1 16-16h136a8 8 0 0 0 8-8V32a8 8 0 0 0-8-8m-8 160H72a31.82 31.82 0 0 0-16 4.29V56a16 16 0 0 1 16-16h128Z"
+            ></path>
+          </g>
+        </svg>
+        Docs
       </a>
       <a
         href="/philosophy"
@@ -127,8 +147,10 @@
     <!-- Mobile Hamburger -->
     <button
       id="menu-toggle"
-      class="md:hidden p-2 rounded hover:bg-coolgray-200 transition-colors"
+      class="xl:hidden p-2 rounded hover:bg-coolgray-200 transition-colors"
       aria-label="Toggle menu"
+      aria-controls="mobile-menu"
+      aria-expanded="false"
     >
       <svg
         class="w-6 h-6 text-white"
@@ -146,10 +168,10 @@
   </div>
 
   <!-- Mobile Menu -->
-  <div id="mobile-menu" class="hidden md:hidden flex-col gap-1 px-4 pb-3">
+  <div id="mobile-menu" class="hidden xl:hidden flex-col gap-1 px-4 pb-3">
     <a
       href="/#features"
-      class="text-white text-sm w-full text-left hover:bg-coolgray-200 p-2 rounded flex items-center gap-2 transition-colors"
+      class="text-white text-base w-full text-left hover:bg-coolgray-200 p-2 rounded flex items-center gap-2 transition-colors"
     >
       <svg
         class="w-5 h-5 text-[#FCD34D]"
@@ -167,8 +189,28 @@
       Features
     </a>
     <a
+      href="/docs"
+      class="text-white text-base w-full text-left hover:bg-coolgray-200 p-2 rounded flex items-center gap-2 transition-colors"
+    >
+      <svg
+        class="w-5 h-5 text-[#FCD34D]"
+        viewBox="0 0 256 256"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <g fill="currentColor">
+          <path
+            d="M208 32v160H72a24 24 0 0 0-24 24V56a24 24 0 0 1 24-24Z"
+            opacity=".2"></path>
+          <path
+            d="M208 24H72a32 32 0 0 0-32 32v168a8 8 0 0 0 8 8h144a8 8 0 0 0 0-16H56a16 16 0 0 1 16-16h136a8 8 0 0 0 8-8V32a8 8 0 0 0-8-8m-8 160H72a31.82 31.82 0 0 0-16 4.29V56a16 16 0 0 1 16-16h128Z"
+          ></path>
+        </g>
+      </svg>
+      Docs
+    </a>
+    <a
       href="/philosophy"
-      class="text-white text-sm w-full text-left hover:bg-coolgray-200 p-2 rounded flex items-center gap-2 transition-colors"
+      class="text-white text-base w-full text-left hover:bg-coolgray-200 p-2 rounded flex items-center gap-2 transition-colors"
     >
       <svg
         class="w-5 h-5 text-[#FCD34D]"
@@ -188,7 +230,7 @@
     </a>
     <a
       href="/#faq"
-      class="text-white text-sm w-full text-left hover:bg-coolgray-200 p-2 rounded flex items-center gap-2 transition-colors"
+      class="text-white text-base w-full text-left hover:bg-coolgray-200 p-2 rounded flex items-center gap-2 transition-colors"
     >
       <svg
         class="w-5 h-5 text-[#FCD34D]"
@@ -208,7 +250,7 @@
     </a>
     <a
       href="/sponsorships"
-      class="text-white text-sm w-full text-left hover:bg-coolgray-200 p-2 rounded flex items-center gap-2 transition-colors"
+      class="text-white text-base w-full text-left hover:bg-coolgray-200 p-2 rounded flex items-center gap-2 transition-colors"
     >
       <svg
         class="w-5 h-5 text-[#FCD34D]"
@@ -237,7 +279,7 @@
     </a>
     <a
       href="https://coollabs.io/discord"
-      class="text-white text-sm w-full text-left hover:bg-coolgray-200 p-2 rounded flex items-center gap-2 transition-colors"
+      class="text-white text-base w-full text-left hover:bg-coolgray-200 p-2 rounded flex items-center gap-2 transition-colors"
     >
       <svg
         class="w-5 h-5 text-[#FCD34D]"
@@ -261,13 +303,24 @@
 <script>
   const toggle = document.getElementById("menu-toggle");
   const menu = document.getElementById("mobile-menu");
+  const desktopBreakpoint = window.matchMedia("(min-width: 1280px)");
+
+  const closeMenu = () => {
+    menu?.classList.add("hidden");
+    toggle?.setAttribute("aria-expanded", "false");
+  };
+
   toggle?.addEventListener("click", () => {
+    const isHidden = menu?.classList.contains("hidden") ?? true;
     menu?.classList.toggle("hidden");
+    toggle.setAttribute("aria-expanded", String(isHidden));
   });
-  // Close mobile menu on anchor click
+
+  desktopBreakpoint.addEventListener?.("change", (event) => {
+    if (event.matches) closeMenu();
+  });
+
   menu?.querySelectorAll("a").forEach((link) => {
-    link.addEventListener("click", () => {
-      menu?.classList.add("hidden");
-    });
+    link.addEventListener("click", closeMenu);
   });
 </script>
