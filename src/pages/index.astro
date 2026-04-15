@@ -716,7 +716,8 @@ const screenshots = [
   };
 
   const assetOrder = [".dmg", "-setup.exe", ".msi", "_amd64.AppImage", "_arm64.AppImage", "_amd64.deb", "_arm64.deb", "x86_64.rpm", "aarch64.rpm"];
-  const recommendedExts = new Set([".dmg", "-setup.exe", "_amd64.AppImage", "_arm64.AppImage"]);
+  const osExtMap: Record<string, string> = { mac: ".dmg", windows: "-setup.exe", linux: isArm ? "_arm64.AppImage" : "_amd64.AppImage" };
+  const recommendedExt = osExtMap[os];
 
   // Toggle dropdown
   if (dropdownToggle && dropdown) {
@@ -763,8 +764,7 @@ const screenshots = [
   function applyMergedData(latestTag: string, merged: Record<string, MergedAsset>) {
     if (version) version.textContent = latestTag;
 
-    const osExtMap: Record<string, string> = { mac: ".dmg", windows: "-setup.exe", linux: isArm ? "_arm64.AppImage" : "_amd64.AppImage" };
-    const primary = merged[osExtMap[os]];
+    const primary = merged[recommendedExt];
     if (primary && btn) btn.href = primary.url;
 
     if (dropdownList) {
@@ -775,7 +775,7 @@ const screenshots = [
         const link = document.createElement("a");
         link.href = entry.url;
         link.className = `flex ${entry.isOlder ? "items-start" : "items-center"} justify-between px-4 py-2.5 hover:bg-coolgray-400 transition-colors text-white`;
-        const recommended = recommendedExts.has(ext);
+        const recommended = ext === recommendedExt;
         const badge = recommended ? `<span class="text-emerald-400 text-xs ml-2">Recommended</span>` : "";
         const building = entry.isOlder ? `<div class="text-[#FCD34D] text-xs">Currently building ${latestTag}...</div>` : "";
         const filename = entry.isOlder ? `${entry.name} (${entry.tag})` : entry.name;
