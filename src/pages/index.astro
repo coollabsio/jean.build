@@ -35,26 +35,6 @@ const screenshots = [
       Linear integrations in one cohesive workflow.
     </p>
 <p>Open source & free forever, backed by <a class="underline" href="/philosophy">our philosophy</a>.</p>
-    <div class="mt-6 flex items-center justify-center gap-3">
-      <a href="/docs" class="button inline-flex items-center gap-2">
-        <svg
-          class="w-4 h-4 text-[#FCD34D]"
-          viewBox="0 0 256 256"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <g fill="currentColor">
-            <path
-              d="M208 32v160H72a24 24 0 0 0-24 24V56a24 24 0 0 1 24-24Z"
-              opacity=".2"></path>
-            <path
-              d="M208 24H72a32 32 0 0 0-32 32v168a8 8 0 0 0 8 8h144a8 8 0 0 0 0-16H56a16 16 0 0 1 16-16h136a8 8 0 0 0 8-8V32a8 8 0 0 0-8-8m-8 160H72a31.82 31.82 0 0 0-16 4.29V56a16 16 0 0 1 16-16h128Z"
-            ></path>
-          </g>
-        </svg>
-        Read the docs
-      </a>
-    </div>
-
     <!-- Download Badge -->
     <div
       class="mt-6 inline-flex items-center gap-2 text-sm px-4 py-2 rounded"
@@ -237,15 +217,23 @@ const screenshots = [
               d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"
             ></path>
           </svg>
-          Context Loading
+          Magic Prompts
         </dt>
         <dd
           class="mt-4 flex flex-auto flex-col text-sm leading-6 text-neutral-400"
         >
           <p class="flex-auto">
-            Load context from sessions, GitHub Issues, Pull Requests, and
-            Linear issues directly into your AI agent's workspace. No manual copy-pasting.
+            Customize the prompt template, backend, model, and reasoning level
+            behind every built-in workflow. Use a light model for commits, a
+            heavy one for reviews — no UI churn.
           </p>
+          <a
+            href="/docs/manage/magic-prompts"
+            class="mt-3 inline-flex items-center gap-1 text-[#FCD34D] text-sm hover:underline self-start"
+          >
+            Learn more
+            <span aria-hidden="true">→</span>
+          </a>
         </dd>
       </div>
 
@@ -318,6 +306,43 @@ const screenshots = [
             <path
               stroke-linecap="round"
               stroke-linejoin="round"
+              d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z"
+            ></path>
+          </svg>
+          Token-Reduction Plugins
+        </dt>
+        <dd
+          class="mt-4 flex flex-auto flex-col text-sm leading-6 text-neutral-400"
+        >
+          <p class="flex-auto">
+            One-click installs in the Opinionated pane. RTK proxies your CLI
+            tools to cut 60–90% of tool-output tokens across every backend;
+            Caveman trims Claude's replies by ~65–75% with terse, technical
+            output.
+          </p>
+          <a
+            href="/docs/manage/opinionated-plugins"
+            class="mt-3 inline-flex items-center gap-1 text-[#FCD34D] text-sm hover:underline self-start"
+          >
+            Learn more
+            <span aria-hidden="true">→</span>
+          </a>
+        </dd>
+      </div>
+
+      <!-- Feature 7 -->
+      <div class="flex flex-col">
+        <dt class="flex items-center gap-x-3 text-xl text-white">
+          <svg
+            class="w-6 h-6 text-[#FCD34D] flex-shrink-0"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
               d="M10.5 1.5H8.25A2.25 2.25 0 006 3.75v16.5a2.25 2.25 0 002.25 2.25h7.5A2.25 2.25 0 0018 20.25V3.75a2.25 2.25 0 00-2.25-2.25H13.5m-3 0V3h3V1.5m-3 0h3m-3 18.75h3"
             ></path>
           </svg>
@@ -333,7 +358,7 @@ const screenshots = [
         </dd>
       </div>
 
-      <!-- Feature 7 -->
+      <!-- Feature 8 -->
       <div class="flex flex-col">
         <dt class="flex items-center gap-x-3 text-xl text-white">
           <svg
@@ -361,7 +386,7 @@ const screenshots = [
         </dd>
       </div>
 
-      <!-- Feature 8 -->
+      <!-- Feature 9 -->
       <div class="flex flex-col">
         <dt class="flex items-center gap-x-3 text-xl text-white">
           <svg
@@ -389,7 +414,7 @@ const screenshots = [
           </p>
         </dd>
       </div>
-      <!-- Feature 9 -->
+      <!-- Feature 10 -->
       <div class="flex flex-col">
         <dt class="flex items-center gap-x-3 text-xl text-white">
           <svg
@@ -417,7 +442,7 @@ const screenshots = [
         </dd>
       </div>
 
-      <!-- Feature 10 -->
+      <!-- Feature 11 -->
       <div class="flex flex-col">
         <dt class="flex items-center gap-x-3 text-xl text-white">
           <svg
@@ -439,9 +464,55 @@ const screenshots = [
           class="mt-4 flex flex-auto flex-col text-sm leading-6 text-neutral-400"
         >
           <p class="flex-auto">
-            Manage multiple repositories from one dashboard. Link related projects
-            for cross-project context sharing and set custom avatars for easy identification.
+            Manage multiple repos from one dashboard. Link related projects and
+            Jean auto-injects their <code class="text-neutral-200">CLAUDE.md</code>,
+            <code class="text-neutral-200">AGENTS.md</code>, and
+            <code class="text-neutral-200">docs/</code> into every session —
+            cross-repo context without copy-paste.
           </p>
+          <a
+            href="/docs/core-concepts/project-linking"
+            class="mt-3 inline-flex items-center gap-1 text-[#FCD34D] text-sm hover:underline self-start"
+          >
+            Learn more
+            <span aria-hidden="true">→</span>
+          </a>
+        </dd>
+      </div>
+
+      <!-- Feature 12: Docs CTA -->
+      <div class="flex flex-col">
+        <dt class="flex items-center gap-x-3 text-xl text-white">
+          <svg
+            class="w-6 h-6 text-[#FCD34D] flex-shrink-0"
+            viewBox="0 0 256 256"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <g fill="currentColor">
+              <path
+                d="M208 32v160H72a24 24 0 0 0-24 24V56a24 24 0 0 1 24-24Z"
+                opacity=".2"></path>
+              <path
+                d="M208 24H72a32 32 0 0 0-32 32v168a8 8 0 0 0 8 8h144a8 8 0 0 0 0-16H56a16 16 0 0 1 16-16h136a8 8 0 0 0 8-8V32a8 8 0 0 0-8-8m-8 160H72a31.82 31.82 0 0 0-16 4.29V56a16 16 0 0 1 16-16h128Z"
+              ></path>
+            </g>
+          </svg>
+          Want to learn more?
+        </dt>
+        <dd
+          class="mt-4 flex flex-auto flex-col text-sm leading-6 text-neutral-400"
+        >
+          <p class="flex-auto">
+            Dive deeper into Jean's workflows, integrations, and configuration.
+            Our docs cover everything from your first session to advanced setups.
+          </p>
+          <a
+            href="/docs"
+            class="mt-3 inline-flex items-center gap-1 text-[#FCD34D] text-sm hover:underline self-start"
+          >
+            Check our docs
+            <span aria-hidden="true">→</span>
+          </a>
         </dd>
       </div>
     </dl>
@@ -587,7 +658,34 @@ const screenshots = [
         </p>
       </div>
 
-      <!-- FAQ 6 -->
+      <!-- FAQ 6: Token reduction -->
+      <div class="faq-item py-4">
+        <button
+          class="faq-button w-full text-left text-sm font-medium flex justify-between items-center text-white"
+          aria-expanded="false"
+        >
+          <span>Does Jean help reduce token usage?</span>
+          <svg
+            class="w-6 h-6 transition-transform duration-200 flex-shrink-0"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
+              clip-rule="evenodd"></path>
+          </svg>
+        </button>
+        <p class="faq-answer hidden mt-2 text-sm text-neutral-300 text-left">
+          Yes. The Opinionated pane installs RTK (a CLI proxy that compresses
+          tool outputs 60&ndash;90% across every backend) and Caveman (a Claude
+          skill that produces terse replies, ~65&ndash;75% shorter) with one
+          click. See
+          <a href="/docs/manage/opinionated-plugins" class="text-[#FCD34D] underline">Opinionated Plugins</a>.
+        </p>
+      </div>
+
+      <!-- FAQ 7: Contribute -->
       <div class="faq-item py-4">
         <button
           class="faq-button w-full text-left text-sm font-medium flex justify-between items-center text-white"
@@ -613,7 +711,7 @@ const screenshots = [
         </p>
       </div>
 
-      <!-- FAQ 7 -->
+      <!-- FAQ 8 -->
       <div class="faq-item py-4">
         <button
           class="faq-button w-full text-left text-sm font-medium flex justify-between items-center text-white"
