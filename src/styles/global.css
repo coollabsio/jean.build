@@ -1,0 +1,36 @@
+@import "tailwindcss";
+
+@plugin "@tailwindcss/typography";
+
+@plugin "daisyui" {
+  themes: false;
+}
+
+@plugin "daisyui/theme" {
+  name: "dark";
+  default: true;
+  prefersdark: true;
+  color-scheme: "dark";
+  --color-primary: #6B16ED;
+  --color-secondary: #7317FF;
+  --color-accent: #FCD34D;
+  --color-neutral: #242424;
+  --color-base-100: #101010;
+  --color-base-200: #181818;
+  --color-base-300: #202020;
+  --color-info: #2563EB;
+  --color-success: #16A34A;
+  --color-warning: #FCD34D;
+  --color-error: #DC2626;
+}
+
+@theme {
+  --color-coollabs: #6B16ED;
+  --color-coollabs-100: #7317FF;
+  --color-coolblack: #181818;
+  --color-coolgray-100: #181818;
+  --color-coolgray-200: #202020;
+  --color-coolgray-300: #242424;
+  --color-coolgray-400: #282828;
+  --color-coolgray-500: #323232;
+}
