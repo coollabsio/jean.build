@@ -41,19 +41,7 @@ const screenshots = [
     <div
       class="mt-6 inline-flex items-center gap-2 text-sm px-4 py-2 rounded"
     >
-      <svg
-        class="w-4 h-4 text-[#FCD34D]"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke-width="1.5"
-        stroke="currentColor"
-      >
-        <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          d="M9 17.25v1.007a3 3 0 01-.879 2.122L7.5 21h9l-.621-.621A3 3 0 0115 18.257V17.25m6-12V15a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 15V5.25A2.25 2.25 0 015.25 3h13.5A2.25 2.25 0 0121 5.25z"
-        ></path>
-      </svg>
+      <i class="ph-duotone ph-monitor text-[#FCD34D] text-base" aria-hidden="true"></i>
       <span class="text-neutral-400">Tested on macOS — Windows &amp; Linux <a href="https://github.com/coollabsio/jean" target="_blank" class="text-[#FCD34D] underline">testers needed</a></span>
     </div>
 
@@ -66,19 +54,7 @@ const screenshots = [
           class="font-mono bg-neutral-900 px-4 py-3 rounded-l text-xs md:text-sm text-left flex items-center justify-between hover:bg-neutral-800 transition-colors cursor-pointer flex-1"
         >
           <div class="flex items-center gap-2">
-            <svg
-              class="w-5 h-5 text-[#FCD34D]"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke-width="1.5"
-              stroke="currentColor"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"
-              ></path>
-            </svg>
+            <i class="ph-duotone ph-download-simple text-[#FCD34D] text-xl" aria-hidden="true"></i>
             <span id="download-label">Download for your platform</span>
           </div>
           <span id="download-version" class="text-neutral-400 text-xs"></span>
@@ -88,9 +64,7 @@ const screenshots = [
           class="bg-neutral-900 px-3 py-3 rounded-r border-l border-coolgray-400 hover:bg-coolgray-400 transition-colors cursor-pointer"
           aria-label="Show all platforms"
         >
-          <svg class="w-4 h-4 text-neutral-400 transition-transform duration-200" viewBox="0 0 20 20" fill="currentColor">
-            <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd"></path>
-          </svg>
+          <i class="ph-duotone ph-caret-down text-neutral-400 text-base transition-transform duration-200" aria-hidden="true"></i>
         </button>
       </div>
       <div id="download-dropdown" class="hidden absolute left-0 right-0 mt-1 bg-coolgray-300 rounded border border-coolgray-400 overflow-hidden z-50">
@@ -100,38 +74,206 @@ const screenshots = [
   </section>
 
   <!-- Screenshots -->
-  <section class="mt-4 pb-10 px-4">
-    <div class="grid grid-cols-1 gap-4">
-      <button data-lightbox="0" class="block overflow-hidden rounded-xl border border-coolgray-300 hover:border-[#FCD34D]/40 transition-colors cursor-pointer">
-        <img src={screenshots[0].src} alt={screenshots[0].alt} loading="lazy" class="w-full" />
-      </button>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <button data-lightbox="1" class="block overflow-hidden rounded-xl border border-coolgray-300 hover:border-[#FCD34D]/40 transition-colors cursor-pointer">
-          <img src={screenshots[1].src} alt={screenshots[1].alt} loading="lazy" class="w-full" />
+  <section class="mt-4 pb-6 px-4">
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-5xl mx-auto">
+      {screenshots.map((screenshot, index) => (
+        <button data-lightbox={index} class="block aspect-video overflow-hidden rounded-xl border border-coolgray-300 hover:border-[#FCD34D]/40 transition-colors cursor-pointer">
+          <img src={screenshot.src} alt={screenshot.alt} loading="lazy" class="w-full h-full object-cover object-top" />
         </button>
-        <button data-lightbox="2" class="block overflow-hidden rounded-xl border border-coolgray-300 hover:border-[#FCD34D]/40 transition-colors cursor-pointer">
-          <img src={screenshots[2].src} alt={screenshots[2].alt} loading="lazy" class="w-full" />
-        </button>
-        <button data-lightbox="3" class="block overflow-hidden rounded-xl border border-coolgray-300 hover:border-[#FCD34D]/40 transition-colors cursor-pointer">
-          <img src={screenshots[3].src} alt={screenshots[3].alt} loading="lazy" class="w-full" />
-        </button>
-      </div>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <button data-lightbox="4" class="block overflow-hidden rounded-xl border border-coolgray-300 hover:border-[#FCD34D]/40 transition-colors cursor-pointer">
-          <img src={screenshots[4].src} alt={screenshots[4].alt} loading="lazy" class="w-full" />
-        </button>
-        <button data-lightbox="5" class="block overflow-hidden rounded-xl border border-coolgray-300 hover:border-[#FCD34D]/40 transition-colors cursor-pointer">
-          <img src={screenshots[5].src} alt={screenshots[5].alt} loading="lazy" class="w-full" />
-        </button>
-        <button data-lightbox="6" class="block overflow-hidden rounded-xl border border-coolgray-300 hover:border-[#FCD34D]/40 transition-colors cursor-pointer">
-          <img src={screenshots[6].src} alt={screenshots[6].alt} loading="lazy" class="w-full" />
-        </button>
-      </div>
-      <button data-lightbox="7" class="block overflow-hidden rounded-xl border border-coolgray-300 hover:border-[#FCD34D]/40 transition-colors cursor-pointer">
-        <img src={screenshots[7].src} alt={screenshots[7].alt} loading="lazy" class="w-full" />
-      </button>
+      ))}
     </div>
     <ImageLightbox images={screenshots} client:load />
+  </section>
+
+  <!-- Most Useful Features Intro -->
+  <section class="mt-16 px-4 text-center">
+    <p class="text-sm font-semibold uppercase tracking-[0.2em] text-[#FCD34D]">Most useful features</p>
+    <h2 class="mt-4 text-2xl md:text-4xl font-bold tracking-tight">
+      The parts of Jean you'll use every day<span class="text-[#FCD34D]">.</span>
+    </h2>
+    <p class="mt-4 max-w-3xl mx-auto text-neutral-400 text-base md:text-lg leading-relaxed">
+      Linked Projects, Isolated Workspaces, Magic Git Commands, Magic Prompts,
+      and Mr. Robot are the high-leverage workflows that make Jean more than a
+      chat window for agents.
+    </p>
+  </section>
+
+  <!-- Linked Projects Section -->
+  <section id="linked-projects" class="mt-10 pb-10 px-4">
+    <div class="rounded-3xl border border-[#FCD34D]/20 bg-gradient-to-br from-coolgray-300 via-coolgray-200 to-[#101010] p-6 md:p-10 overflow-hidden relative">
+      <div class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#FCD34D]/60 to-transparent"></div>
+      <div class="grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] gap-10 items-center">
+        <div>
+          <p class="text-sm font-semibold uppercase tracking-[0.2em] text-[#FCD34D]">Linked Projects</p>
+          <h2 class="mt-4 text-2xl md:text-5xl font-bold tracking-tight">
+            Make multiple repos feel like one knowledge base<span class="text-[#FCD34D]">.</span>
+          </h2>
+          <p class="mt-6 text-neutral-300 text-base md:text-lg leading-relaxed">
+            Link related projects once and Jean makes your AI agents aware of the
+            surrounding codebase. Your app repo, docs repo, backend, SDK, and
+            shared libraries can all contribute context to the same session —
+            without copy-pasting files or rebuilding prompts by hand.
+          </p>
+          <div class="mt-8 flex flex-col sm:flex-row gap-3">
+            <a
+              href="/docs/core-concepts/project-linking"
+              class="inline-flex items-center justify-center gap-2 rounded bg-[#FCD34D] px-5 py-3 text-sm font-semibold text-[#101010] hover:bg-yellow-300 transition-colors"
+            >
+              Learn about project linking
+              <span aria-hidden="true">→</span>
+            </a>
+            <a
+              href="/docs"
+              class="inline-flex items-center justify-center gap-2 rounded border border-coolgray-500 px-5 py-3 text-sm font-semibold text-white hover:bg-coolgray-400 transition-colors"
+            >
+              Read the docs
+            </a>
+          </div>
+        </div>
+
+        <div class="rounded-2xl border border-coolgray-500 bg-[#101010]/70 p-5 md:p-6 shadow-2xl shadow-black/30">
+          <div class="flex items-center gap-3 border-b border-coolgray-400 pb-4">
+            <div class="flex -space-x-2">
+              <span class="grid h-9 w-9 place-items-center rounded-full border border-coolgray-500 bg-coolgray-300 text-xs font-semibold">app</span>
+              <span class="grid h-9 w-9 place-items-center rounded-full border border-coolgray-500 bg-coolgray-300 text-xs font-semibold">api</span>
+              <span class="grid h-9 w-9 place-items-center rounded-full border border-coolgray-500 bg-coolgray-300 text-xs font-semibold">docs</span>
+            </div>
+            <div>
+              <p class="text-sm font-semibold text-white">Shared agent context</p>
+              <p class="text-xs text-neutral-400">Every linked repo stays visible to the AI</p>
+            </div>
+          </div>
+
+          <ul class="mt-5 space-y-4 text-sm text-neutral-300">
+            <li class="flex gap-3">
+              <i class="ph-duotone ph-check-circle mt-0.5 flex-shrink-0 text-[#FCD34D] text-xl" aria-hidden="true"></i>
+              <span>Agents are reminded to check linked repos for <code class="text-neutral-100">CLAUDE.md</code>, <code class="text-neutral-100">AGENTS.md</code>, and <code class="text-neutral-100">docs/</code>.</span>
+            </li>
+            <li class="flex gap-3">
+              <i class="ph-duotone ph-check-circle mt-0.5 flex-shrink-0 text-[#FCD34D] text-xl" aria-hidden="true"></i>
+              <span>Saved contexts from linked projects appear together, so prior decisions travel across repo boundaries.</span>
+            </li>
+            <li class="flex gap-3">
+              <i class="ph-duotone ph-check-circle mt-0.5 flex-shrink-0 text-[#FCD34D] text-xl" aria-hidden="true"></i>
+              <span>Linked projects are available as shared context, so agents can understand and coordinate changes across related repos.</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Agent Workflows Section -->
+  <section id="agent-workflows" class="mt-6 pb-10 px-4">
+    <div class="text-center max-w-3xl mx-auto">
+      <p class="text-sm font-semibold uppercase tracking-[0.2em] text-[#FCD34D]">Agent Workflows</p>
+      <h2 class="mt-4 text-2xl md:text-4xl font-bold tracking-tight">
+        Parallel agents, magic commands, and automation<span class="text-[#FCD34D]">.</span>
+      </h2>
+      <p class="mt-4 text-neutral-400 text-base md:text-lg leading-relaxed">
+        Jean gives every agent a safe workspace, turns repetitive repo work into
+        guided AI workflows, and can even sweep GitHub issues for you in beta.
+      </p>
+    </div>
+
+    <div class="mt-10 grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <article class="rounded-3xl border border-coolgray-400 bg-coolgray-300/80 p-6 md:p-8">
+        <div class="flex items-start gap-3">
+          <div class="mt-1 grid h-12 w-12 flex-shrink-0 place-items-center rounded-2xl bg-[#FCD34D]/10 text-[#FCD34D]">
+            <i class="ph-duotone ph-git-branch text-2xl" aria-hidden="true"></i>
+          </div>
+          <div>
+            <p class="text-sm font-semibold uppercase tracking-[0.16em] text-[#FCD34D]">Isolated Workspaces</p>
+            <h3 class="text-2xl font-bold text-white">Run agents in parallel without chaos.</h3>
+          </div>
+        </div>
+        <p class="mt-5 text-sm leading-6 text-neutral-300">
+          Every task gets its own git worktree, so agents can investigate, edit,
+          test, and propose changes independently while your main repo stays safe.
+        </p>
+        <ul class="mt-5 space-y-3 text-sm text-neutral-300">
+          <li class="flex gap-3"><span class="text-[#FCD34D]">•</span><span>Launch multiple agents at once without branch conflicts or file clobbering.</span></li>
+          <li class="flex gap-3"><span class="text-[#FCD34D]">•</span><span>Review each worktree separately before merging anything back.</span></li>
+          <li class="flex gap-3"><span class="text-[#FCD34D]">•</span><span>Archive, restore, or delete agent workspaces from Jean instead of juggling shell commands.</span></li>
+        </ul>
+      </article>
+
+      <article class="rounded-3xl border border-coolgray-400 bg-coolgray-300/80 p-6 md:p-8">
+        <div class="flex items-start gap-3">
+          <div class="mt-1 grid h-12 w-12 flex-shrink-0 place-items-center rounded-2xl bg-[#FCD34D]/10 text-[#FCD34D]">
+            <i class="ph-duotone ph-terminal-window text-2xl" aria-hidden="true"></i>
+          </div>
+          <div>
+            <p class="text-sm font-semibold uppercase tracking-[0.16em] text-[#FCD34D]">Magic Git Commands</p>
+            <h3 class="text-2xl font-bold text-white">Ship Git work without the busywork.</h3>
+          </div>
+        </div>
+        <p class="mt-5 text-sm leading-6 text-neutral-300">
+          Investigate issues and PRs, run AI code reviews with tracked findings,
+          generate commits and PR descriptions, write release notes, and resolve
+          merge conflicts from one command palette.
+        </p>
+        <ul class="mt-5 space-y-3 text-sm text-neutral-300">
+          <li class="flex gap-3"><span class="text-[#FCD34D]">•</span><span>Load GitHub and Linear context directly into an agent session.</span></li>
+          <li class="flex gap-3"><span class="text-[#FCD34D]">•</span><span>Review diffs, track findings, and turn agent output into actionable fixes.</span></li>
+          <li class="flex gap-3"><span class="text-[#FCD34D]">•</span><span>Create commits, PR copy, release notes, and conflict resolutions with AI help.</span></li>
+        </ul>
+        <a href="/docs/workflows/magic-commands" class="mt-6 inline-flex items-center gap-1 text-[#FCD34D] text-sm hover:underline">
+          Explore Magic Git Commands
+          <span aria-hidden="true">→</span>
+        </a>
+      </article>
+
+      <article class="rounded-3xl border border-coolgray-400 bg-coolgray-300/80 p-6 md:p-8">
+        <div class="flex items-start gap-3">
+          <div class="mt-1 grid h-12 w-12 flex-shrink-0 place-items-center rounded-2xl bg-[#FCD34D]/10 text-[#FCD34D]">
+            <i class="ph-duotone ph-magic-wand text-2xl" aria-hidden="true"></i>
+          </div>
+          <div>
+            <p class="text-sm font-semibold uppercase tracking-[0.16em] text-[#FCD34D]">Magic Prompts</p>
+            <h3 class="text-2xl font-bold text-white">Tune every workflow to your taste.</h3>
+          </div>
+        </div>
+        <p class="mt-5 text-sm leading-6 text-neutral-300">
+          Every built-in workflow has an editable prompt template plus per-prompt
+          backend, model, and reasoning controls. Use fast models for routine
+          copy and stronger reasoning for reviews or investigations.
+        </p>
+        <ul class="mt-5 space-y-3 text-sm text-neutral-300">
+          <li class="flex gap-3"><span class="text-[#FCD34D]">•</span><span>Customize the exact instructions behind commits, reviews, PRs, and investigations.</span></li>
+          <li class="flex gap-3"><span class="text-[#FCD34D]">•</span><span>Choose different backends, models, and effort levels per workflow.</span></li>
+          <li class="flex gap-3"><span class="text-[#FCD34D]">•</span><span>Keep the UI stable while changing how the AI thinks and writes.</span></li>
+        </ul>
+        <a href="/docs/manage/magic-prompts" class="mt-6 inline-flex items-center gap-1 text-[#FCD34D] text-sm hover:underline">
+          Learn about Magic Prompts
+          <span aria-hidden="true">→</span>
+        </a>
+      </article>
+
+      <article class="rounded-3xl border border-coolgray-400 bg-coolgray-300/80 p-6 md:p-8">
+        <div class="flex items-start gap-3">
+          <div class="mt-1 grid h-12 w-12 flex-shrink-0 place-items-center rounded-2xl bg-[#FCD34D]/10 text-[#FCD34D]">
+            <i class="ph-duotone ph-robot text-2xl" aria-hidden="true"></i>
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <p class="text-sm font-semibold uppercase tracking-[0.16em] text-[#FCD34D]">Mr. Robot</p>
+              <span class="rounded-full border border-[#FCD34D]/30 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-[#FCD34D]">Beta</span>
+            </div>
+            <h3 class="text-2xl font-bold text-white">Let Jean sweep issues while you sleep.</h3>
+          </div>
+        </div>
+        <p class="mt-5 text-sm leading-6 text-neutral-300">
+          Mr. Robot polls open GitHub issues, creates one Jean worktree per issue,
+          and drafts a focused plan. If you want, it can yolo approved plans too.
+        </p>
+        <ul class="mt-5 space-y-3 text-sm text-neutral-300">
+          <li class="flex gap-3"><span class="text-[#FCD34D]">•</span><span>Schedule issue sweeps with limits for issue count and active worktrees.</span></li>
+          <li class="flex gap-3"><span class="text-[#FCD34D]">•</span><span>Filter by included or excluded GitHub labels to control what gets picked up.</span></li>
+          <li class="flex gap-3"><span class="text-[#FCD34D]">•</span><span>Choose separate planning and yolo execution backends and models.</span></li>
+        </ul>
+      </article>
+    </div>
   </section>
 
   <!-- Features Section -->
@@ -149,112 +291,7 @@ const screenshots = [
       <!-- Feature 1 -->
       <div class="flex flex-col">
         <dt class="flex items-center gap-x-3 text-xl text-white">
-          <svg
-            class="w-6 h-6 text-[#FCD34D] flex-shrink-0"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke-width="1.5"
-            stroke="currentColor"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 18v-2.25zM13.5 6a2.25 2.25 0 012.25-2.25H18A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25a2.25 2.25 0 01-2.25-2.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z"
-            ></path>
-          </svg>
-          Isolated Workspaces
-        </dt>
-        <dd
-          class="mt-4 flex flex-auto flex-col text-sm leading-6 text-neutral-400"
-        >
-          <p class="flex-auto">
-            Run multiple AI agents in parallel, each in its own isolated git
-            worktree. No conflicts, no interference, maximum throughput.
-          </p>
-        </dd>
-      </div>
-
-      <!-- Feature 2 -->
-      <div class="flex flex-col">
-        <dt class="flex items-center gap-x-3 text-xl text-white">
-          <svg
-            class="w-6 h-6 text-[#FCD34D] flex-shrink-0"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke-width="1.5"
-            stroke="currentColor"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.455 2.456L21.75 6l-1.036.259a3.375 3.375 0 00-2.455 2.456zM16.894 20.567L16.5 21.75l-.394-1.183a2.25 2.25 0 00-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 001.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 001.423 1.423l1.183.394-1.183.394a2.25 2.25 0 00-1.423 1.423z"
-            ></path>
-          </svg>
-          Magic Git Commands
-        </dt>
-        <dd
-          class="mt-4 flex flex-auto flex-col text-sm leading-6 text-neutral-400"
-        >
-          <p class="flex-auto">
-            Investigate issues and PRs, review code with finding tracking,
-            generate AI commit messages, PR descriptions, and release notes,
-            and resolve merge conflicts — all with AI assistance.
-          </p>
-        </dd>
-      </div>
-
-      <!-- Feature 3 -->
-      <div class="flex flex-col">
-        <dt class="flex items-center gap-x-3 text-xl text-white">
-          <svg
-            class="w-6 h-6 text-[#FCD34D] flex-shrink-0"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke-width="1.5"
-            stroke="currentColor"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"
-            ></path>
-          </svg>
-          Magic Prompts
-        </dt>
-        <dd
-          class="mt-4 flex flex-auto flex-col text-sm leading-6 text-neutral-400"
-        >
-          <p class="flex-auto">
-            Customize the prompt template, backend, model, and reasoning level
-            behind every built-in workflow. Use a light model for commits, a
-            heavy one for reviews — no UI churn.
-          </p>
-          <a
-            href="/docs/manage/magic-prompts"
-            class="mt-3 inline-flex items-center gap-1 text-[#FCD34D] text-sm hover:underline self-start"
-          >
-            Learn more
-            <span aria-hidden="true">→</span>
-          </a>
-        </dd>
-      </div>
-
-      <!-- Feature 4 -->
-      <div class="flex flex-col">
-        <dt class="flex items-center gap-x-3 text-xl text-white">
-          <svg
-            class="w-6 h-6 text-[#FCD34D] flex-shrink-0"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke-width="1.5"
-            stroke="currentColor"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M20.25 6.375c0 2.278-3.694 4.125-8.25 4.125S3.75 8.653 3.75 6.375m16.5 0c0-2.278-3.694-4.125-8.25-4.125S3.75 4.097 3.75 6.375m16.5 0v11.25c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125V6.375m16.5 0v3.75m-16.5-3.75v3.75m16.5 0v3.75C20.25 16.153 16.556 18 12 18s-8.25-1.847-8.25-4.125v-3.75m16.5 0c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125"
-            ></path>
-          </svg>
+          <i class="ph-duotone ph-database text-[#FCD34D] text-2xl flex-shrink-0" aria-hidden="true"></i>
           Worktree Management
         </dt>
         <dd
@@ -267,22 +304,10 @@ const screenshots = [
         </dd>
       </div>
 
-      <!-- Feature 5 -->
+      <!-- Feature 2 -->
       <div class="flex flex-col">
         <dt class="flex items-center gap-x-3 text-xl text-white">
-          <svg
-            class="w-6 h-6 text-[#FCD34D] flex-shrink-0"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke-width="1.5"
-            stroke="currentColor"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M7.5 21L3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 12M21 7.5H7.5"
-            ></path>
-          </svg>
+          <i class="ph-duotone ph-arrows-left-right text-[#FCD34D] text-2xl flex-shrink-0" aria-hidden="true"></i>
           Automated Merging
         </dt>
         <dd
@@ -295,22 +320,10 @@ const screenshots = [
         </dd>
       </div>
 
-      <!-- Feature 6 -->
+      <!-- Feature 3 -->
       <div class="flex flex-col">
         <dt class="flex items-center gap-x-3 text-xl text-white">
-          <svg
-            class="w-6 h-6 text-[#FCD34D] flex-shrink-0"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke-width="1.5"
-            stroke="currentColor"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z"
-            ></path>
-          </svg>
+          <i class="ph-duotone ph-lightning text-[#FCD34D] text-2xl flex-shrink-0" aria-hidden="true"></i>
           Token-Reduction Plugins
         </dt>
         <dd
@@ -332,22 +345,10 @@ const screenshots = [
         </dd>
       </div>
 
-      <!-- Feature 7 -->
+      <!-- Feature 4 -->
       <div class="flex flex-col">
         <dt class="flex items-center gap-x-3 text-xl text-white">
-          <svg
-            class="w-6 h-6 text-[#FCD34D] flex-shrink-0"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke-width="1.5"
-            stroke="currentColor"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M10.5 1.5H8.25A2.25 2.25 0 006 3.75v16.5a2.25 2.25 0 002.25 2.25h7.5A2.25 2.25 0 0018 20.25V3.75a2.25 2.25 0 00-2.25-2.25H13.5m-3 0V3h3V1.5m-3 0h3m-3 18.75h3"
-            ></path>
-          </svg>
+          <i class="ph-duotone ph-device-mobile text-[#FCD34D] text-2xl flex-shrink-0" aria-hidden="true"></i>
           Mobile Access
         </dt>
         <dd
@@ -360,22 +361,10 @@ const screenshots = [
         </dd>
       </div>
 
-      <!-- Feature 8 -->
+      <!-- Feature 5 -->
       <div class="flex flex-col">
         <dt class="flex items-center gap-x-3 text-xl text-white">
-          <svg
-            class="w-6 h-6 text-[#FCD34D] flex-shrink-0"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke-width="1.5"
-            stroke="currentColor"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M14.25 9.75L16.5 12l-2.25 2.25m-4.5 0L7.5 12l2.25-2.25M6 20.25h12A2.25 2.25 0 0020.25 18V6A2.25 2.25 0 0018 3.75H6A2.25 2.25 0 003.75 6v12A2.25 2.25 0 006 20.25z"
-            ></path>
-          </svg>
+          <i class="ph-duotone ph-code text-[#FCD34D] text-2xl flex-shrink-0" aria-hidden="true"></i>
           Open Source
         </dt>
         <dd
@@ -388,22 +377,10 @@ const screenshots = [
         </dd>
       </div>
 
-      <!-- Feature 9 -->
+      <!-- Feature 6 -->
       <div class="flex flex-col">
         <dt class="flex items-center gap-x-3 text-xl text-white">
-          <svg
-            class="w-6 h-6 text-[#FCD34D] flex-shrink-0"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke-width="1.5"
-            stroke="currentColor"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M6 13.5V3.75m0 9.75a1.5 1.5 0 010 3m0-3a1.5 1.5 0 000 3m0 3.75V16.5m12-3V3.75m0 9.75a1.5 1.5 0 010 3m0-3a1.5 1.5 0 000 3m0 3.75V16.5m-6-9V3.75m0 3.75a1.5 1.5 0 010 3m0-3a1.5 1.5 0 000 3m0 9.75V10.5"
-            ></path>
-          </svg>
+          <i class="ph-duotone ph-sliders-horizontal text-[#FCD34D] text-2xl flex-shrink-0" aria-hidden="true"></i>
           Opinionated by Design
         </dt>
         <dd
@@ -416,22 +393,10 @@ const screenshots = [
           </p>
         </dd>
       </div>
-      <!-- Feature 10 -->
+      <!-- Feature 7 -->
       <div class="flex flex-col">
         <dt class="flex items-center gap-x-3 text-xl text-white">
-          <svg
-            class="w-6 h-6 text-[#FCD34D] flex-shrink-0"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke-width="1.5"
-            stroke="currentColor"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M14.25 6.087c0-.355.186-.676.401-.959.221-.29.349-.634.349-1.003 0-1.036-1.007-1.875-2.25-1.875s-2.25.84-2.25 1.875c0 .369.128.713.349 1.003.215.283.401.604.401.959v0a.64.64 0 01-.657.643 48.39 48.39 0 01-4.163-.3c.186 1.613.293 3.25.315 4.907a.656.656 0 01-.658.663v0c-.355 0-.676-.186-.959-.401a1.647 1.647 0 00-1.003-.349c-1.036 0-1.875 1.007-1.875 2.25s.84 2.25 1.875 2.25c.369 0 .713-.128 1.003-.349.283-.215.604-.401.959-.401v0c.31 0 .555.26.532.57a48.039 48.039 0 01-.642 5.056c1.518.19 3.058.309 4.616.354a.64.64 0 00.657-.643v0c0-.355-.186-.676-.401-.959a1.647 1.647 0 01-.349-1.003c0-1.035 1.008-1.875 2.25-1.875 1.243 0 2.25.84 2.25 1.875 0 .369-.128.713-.349 1.003-.215.283-.4.604-.4.959v0c0 .333.277.599.61.58a48.1 48.1 0 005.427-.63 48.05 48.05 0 00.582-4.717.532.532 0 00-.533-.57v0c-.355 0-.676.186-.959.401-.29.221-.634.349-1.003.349-1.035 0-1.875-1.007-1.875-2.25s.84-2.25 1.875-2.25c.37 0 .713.128 1.003.349.283.215.604.401.96.401v0a.656.656 0 00.658-.663 48.422 48.422 0 00-.37-5.36c-1.886.342-3.81.574-5.766.689a.578.578 0 01-.61-.58v0z"
-            ></path>
-          </svg>
+          <i class="ph-duotone ph-plug text-[#FCD34D] text-2xl flex-shrink-0" aria-hidden="true"></i>
           Linear Integration
         </dt>
         <dd
@@ -444,61 +409,10 @@ const screenshots = [
         </dd>
       </div>
 
-      <!-- Feature 11 -->
+      <!-- Feature 8: Docs CTA -->
       <div class="flex flex-col">
         <dt class="flex items-center gap-x-3 text-xl text-white">
-          <svg
-            class="w-6 h-6 text-[#FCD34D] flex-shrink-0"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke-width="1.5"
-            stroke="currentColor"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M2.25 12.75V12A2.25 2.25 0 014.5 9.75h15A2.25 2.25 0 0121.75 12v.75m-8.69-6.44l-2.12-2.12a1.5 1.5 0 00-1.061-.44H4.5A2.25 2.25 0 002.25 6v12a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9a2.25 2.25 0 00-2.25-2.25h-5.379a1.5 1.5 0 01-1.06-.44z"
-            ></path>
-          </svg>
-          Multi-project &amp; Linked Projects
-        </dt>
-        <dd
-          class="mt-4 flex flex-auto flex-col text-sm leading-6 text-neutral-400"
-        >
-          <p class="flex-auto">
-            Manage multiple repos from one dashboard. Link related projects and
-            Jean auto-injects their <code class="text-neutral-200">CLAUDE.md</code>,
-            <code class="text-neutral-200">AGENTS.md</code>, and
-            <code class="text-neutral-200">docs/</code> into every session —
-            cross-repo context without copy-paste.
-          </p>
-          <a
-            href="/docs/core-concepts/project-linking"
-            class="mt-3 inline-flex items-center gap-1 text-[#FCD34D] text-sm hover:underline self-start"
-          >
-            Learn more
-            <span aria-hidden="true">→</span>
-          </a>
-        </dd>
-      </div>
-
-      <!-- Feature 12: Docs CTA -->
-      <div class="flex flex-col">
-        <dt class="flex items-center gap-x-3 text-xl text-white">
-          <svg
-            class="w-6 h-6 text-[#FCD34D] flex-shrink-0"
-            viewBox="0 0 256 256"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <g fill="currentColor">
-              <path
-                d="M208 32v160H72a24 24 0 0 0-24 24V56a24 24 0 0 1 24-24Z"
-                opacity=".2"></path>
-              <path
-                d="M208 24H72a32 32 0 0 0-32 32v168a8 8 0 0 0 8 8h144a8 8 0 0 0 0-16H56a16 16 0 0 1 16-16h136a8 8 0 0 0 8-8V32a8 8 0 0 0-8-8m-8 160H72a31.82 31.82 0 0 0-16 4.29V56a16 16 0 0 1 16-16h128Z"
-              ></path>
-            </g>
-          </svg>
+          <i class="ph-duotone ph-book-open text-[#FCD34D] text-2xl flex-shrink-0" aria-hidden="true"></i>
           Want to learn more?
         </dt>
         <dd
@@ -539,16 +453,7 @@ const screenshots = [
           aria-expanded="false"
         >
           <span>What is Jean?</span>
-          <svg
-            class="w-6 h-6 transition-transform duration-200 flex-shrink-0"
-            viewBox="0 0 20 20"
-            fill="currentColor"
-          >
-            <path
-              fill-rule="evenodd"
-              d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
-              clip-rule="evenodd"></path>
-          </svg>
+          <i class="ph-duotone ph-caret-down text-2xl transition-transform duration-200 flex-shrink-0" aria-hidden="true"></i>
         </button>
         <p class="faq-answer hidden mt-2 text-sm text-neutral-300 text-left">
           Jean is an open-source AI assistant desktop application that helps you
@@ -565,16 +470,7 @@ const screenshots = [
           aria-expanded="false"
         >
           <span>Is Jean really free?</span>
-          <svg
-            class="w-6 h-6 transition-transform duration-200 flex-shrink-0"
-            viewBox="0 0 20 20"
-            fill="currentColor"
-          >
-            <path
-              fill-rule="evenodd"
-              d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
-              clip-rule="evenodd"></path>
-          </svg>
+          <i class="ph-duotone ph-caret-down text-2xl transition-transform duration-200 flex-shrink-0" aria-hidden="true"></i>
         </button>
         <p class="faq-answer hidden mt-2 text-sm text-neutral-300 text-left">
           Yes, 100%. Jean is open source under the Apache 2.0 license. There
@@ -591,16 +487,7 @@ const screenshots = [
           aria-expanded="false"
         >
           <span>What platforms does Jean support?</span>
-          <svg
-            class="w-6 h-6 transition-transform duration-200 flex-shrink-0"
-            viewBox="0 0 20 20"
-            fill="currentColor"
-          >
-            <path
-              fill-rule="evenodd"
-              d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
-              clip-rule="evenodd"></path>
-          </svg>
+          <i class="ph-duotone ph-caret-down text-2xl transition-transform duration-200 flex-shrink-0" aria-hidden="true"></i>
         </button>
         <p class="faq-answer hidden mt-2 text-sm text-neutral-300 text-left">
           Jean is currently tested on macOS. Windows and Linux should work but
@@ -616,16 +503,7 @@ const screenshots = [
           aria-expanded="false"
         >
           <span>How does Jean work with git?</span>
-          <svg
-            class="w-6 h-6 transition-transform duration-200 flex-shrink-0"
-            viewBox="0 0 20 20"
-            fill="currentColor"
-          >
-            <path
-              fill-rule="evenodd"
-              d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
-              clip-rule="evenodd"></path>
-          </svg>
+          <i class="ph-duotone ph-caret-down text-2xl transition-transform duration-200 flex-shrink-0" aria-hidden="true"></i>
         </button>
         <p class="faq-answer hidden mt-2 text-sm text-neutral-300 text-left">
           Jean uses git worktrees to create isolated workspaces for each AI
@@ -643,16 +521,7 @@ const screenshots = [
           aria-expanded="false"
         >
           <span>What AI models does Jean use?</span>
-          <svg
-            class="w-6 h-6 transition-transform duration-200 flex-shrink-0"
-            viewBox="0 0 20 20"
-            fill="currentColor"
-          >
-            <path
-              fill-rule="evenodd"
-              d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
-              clip-rule="evenodd"></path>
-          </svg>
+          <i class="ph-duotone ph-caret-down text-2xl transition-transform duration-200 flex-shrink-0" aria-hidden="true"></i>
         </button>
         <p class="faq-answer hidden mt-2 text-sm text-neutral-300 text-left">
           Jean supports Claude CLI, Codex CLI, OpenCode, Cursor, Pi, and Command Code. Pi and Command Code are currently beta integrations. You can bring
@@ -667,16 +536,7 @@ const screenshots = [
           aria-expanded="false"
         >
           <span>Does Jean help reduce token usage?</span>
-          <svg
-            class="w-6 h-6 transition-transform duration-200 flex-shrink-0"
-            viewBox="0 0 20 20"
-            fill="currentColor"
-          >
-            <path
-              fill-rule="evenodd"
-              d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
-              clip-rule="evenodd"></path>
-          </svg>
+          <i class="ph-duotone ph-caret-down text-2xl transition-transform duration-200 flex-shrink-0" aria-hidden="true"></i>
         </button>
         <p class="faq-answer hidden mt-2 text-sm text-neutral-300 text-left">
           Yes. The Opinionated pane installs RTK (a CLI proxy that compresses
@@ -694,16 +554,7 @@ const screenshots = [
           aria-expanded="false"
         >
           <span>How do I contribute?</span>
-          <svg
-            class="w-6 h-6 transition-transform duration-200 flex-shrink-0"
-            viewBox="0 0 20 20"
-            fill="currentColor"
-          >
-            <path
-              fill-rule="evenodd"
-              d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
-              clip-rule="evenodd"></path>
-          </svg>
+          <i class="ph-duotone ph-caret-down text-2xl transition-transform duration-200 flex-shrink-0" aria-hidden="true"></i>
         </button>
         <p class="faq-answer hidden mt-2 text-sm text-neutral-300 text-left">
           We welcome contributions of all kinds &mdash; code, documentation, bug
@@ -720,16 +571,7 @@ const screenshots = [
           aria-expanded="false"
         >
           <span>Why is Jean opinionated?</span>
-          <svg
-            class="w-6 h-6 transition-transform duration-200 flex-shrink-0"
-            viewBox="0 0 20 20"
-            fill="currentColor"
-          >
-            <path
-              fill-rule="evenodd"
-              d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
-              clip-rule="evenodd"></path>
-          </svg>
+          <i class="ph-duotone ph-caret-down text-2xl transition-transform duration-200 flex-shrink-0" aria-hidden="true"></i>
         </button>
         <p class="faq-answer hidden mt-2 text-sm text-neutral-300 text-left">
           We believe developer tools should make decisions for you, not present
