@@ -1,157 +1,78 @@
 ---
+import Icon from "./Icon.astro";
+import Menu from "reicon/icons/Menu";
 
+const links = [
+  { href: "/philosophy", label: "Philosophy" },
+  { href: "/#features", label: "Features" },
+  { href: "/docs", label: "Docs" },
+  { href: "/#faq", label: "FAQ" },
+  { href: "/changelog", label: "Changelog" },
+  { href: "/sponsorships", label: "Sponsor us" },
+];
 ---
 
-<nav
-  class="sticky top-0 z-50 bg-[#101010]/80 backdrop-blur-md border-b border-coolgray-300/50"
->
-  <div class="max-w-6xl mx-auto px-4 flex items-center justify-between h-16">
-    <!-- Logo -->
-    <a href="/" class="flex items-center gap-2 text-xl font-bold tracking-tight text-white">
-      <img src="/logo.png" alt="Jean" class="w-8 h-8" />
-      Jean
+<header class="sticky top-0 z-50 bg-app/30 backdrop-blur-xl">
+  <nav class="mx-auto flex h-14 max-w-7xl items-center justify-between gap-6 px-4">
+    <a href="/" class="flex shrink-0 items-center gap-2">
+      <img src="/logo.png" alt="" class="size-6" />
+      <span class="text-base font-semibold tracking-tight text-fg">Jean</span>
     </a>
-
-    <!-- Desktop Nav -->
-    <div class="hidden xl:flex items-center gap-1">
-      <a
-        href="/philosophy"
-        class="text-white text-base hover:bg-coolgray-200 p-2 px-3 rounded flex items-center gap-2 transition-colors"
-      >
-        <i class="ph-duotone ph-lightbulb text-[#FCD34D] text-xl" aria-hidden="true"></i>
-        Philosophy
-      </a>
-      <a
-        href="/#features"
-        class="text-white text-base hover:bg-coolgray-200 p-2 px-3 rounded flex items-center gap-2 transition-colors"
-      >
-        <i class="ph-duotone ph-lightning text-[#FCD34D] text-xl" aria-hidden="true"></i>
-        Features
-      </a>
-      <a
-        href="/docs"
-        class="text-white text-base hover:bg-coolgray-200 p-2 px-3 rounded flex items-center gap-2 transition-colors"
-      >
-        <i class="ph-duotone ph-book-open text-[#FCD34D] text-xl" aria-hidden="true"></i>
-        Docs
-      </a>
-      <a
-        href="/#faq"
-        class="text-white text-base hover:bg-coolgray-200 p-2 px-3 rounded flex items-center gap-2 transition-colors"
-      >
-        <i class="ph-duotone ph-question text-[#FCD34D] text-xl" aria-hidden="true"></i>
-        FAQ
-      </a>
-      <a
-        href="/sponsorships"
-        class="text-white text-base hover:bg-coolgray-200 p-2 px-3 rounded flex items-center gap-2 transition-colors"
-      >
-        <i class="ph-duotone ph-coins text-[#FCD34D] text-xl" aria-hidden="true"></i>
-        Sponsor Us
-      </a>
-      <a
-        href="/changelog"
-        class="text-white text-base hover:bg-coolgray-200 p-2 px-3 rounded flex items-center gap-2 transition-colors"
-      >
-        <i class="ph-duotone ph-clock-counter-clockwise text-[#FCD34D] text-xl" aria-hidden="true"></i>
-        Changelog
-      </a>
-      <a
-        href="https://coollabs.io/discord"
-        class="text-white text-base hover:bg-coolgray-200 p-2 px-3 rounded flex items-center gap-2 transition-colors"
-      >
-        <i class="ph-duotone ph-game-controller text-[#FCD34D] text-xl" aria-hidden="true"></i>
-        coolLabs Community (20k+)
-      </a>
+    <div class="hidden flex-1 items-center gap-0.5 xl:flex">
+      {links.map((link) => <a class="navbar-link" href={link.href}>{link.label}</a>)}
     </div>
-
-    <!-- Mobile Hamburger -->
-    <button
-      id="menu-toggle"
-      class="xl:hidden p-2 rounded hover:bg-coolgray-200 transition-colors"
-      aria-label="Toggle menu"
-      aria-controls="mobile-menu"
-      aria-expanded="false"
-    >
-      <i class="ph-duotone ph-list text-white text-2xl" aria-hidden="true"></i>
-    </button>
+    <div class="flex items-center gap-2">
+      <a class="navbar-link hidden! xl:flex!" href="https://coollabs.io/discord">
+        <svg class="size-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.095 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.095 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"></path>
+        </svg>
+        Community <span class="community-count text-fg-faint tabular-nums">20k+</span>
+      </a>
+      <a class="btn btn-primary hidden sm:inline-flex" href="https://github.com/coollabsio/jean/releases/latest">Download</a>
+      <button
+        id="menu-toggle"
+        type="button"
+        aria-label="Toggle menu"
+        aria-controls="mobile-menu"
+        aria-expanded="false"
+        class="flex size-9 items-center justify-center rounded-md text-fg-dim hover:bg-white/[0.06] hover:text-fg xl:hidden"
+      >
+        <Icon icon={Menu} class="size-5" />
+      </button>
+    </div>
+  </nav>
+  <div id="mobile-menu" class="hidden flex-col gap-0.5 border-t border-hairline px-4 py-3 xl:hidden!">
+    {links.map((link) => <a class="navbar-link" href={link.href}>{link.label}</a>)}
+    <a class="navbar-link" href="https://coollabs.io/discord">
+      Community <span class="community-count text-fg-faint tabular-nums">20k+</span>
+    </a>
+    <a class="btn btn-primary mt-2 w-full sm:hidden" href="https://github.com/coollabsio/jean/releases/latest">Download</a>
   </div>
-
-  <!-- Mobile Menu -->
-  <div id="mobile-menu" class="hidden xl:hidden flex-col gap-1 px-4 pb-3">
-    <a
-      href="/philosophy"
-      class="text-white text-base w-full text-left hover:bg-coolgray-200 p-2 rounded flex items-center gap-2 transition-colors"
-    >
-      <i class="ph-duotone ph-lightbulb text-[#FCD34D] text-xl" aria-hidden="true"></i>
-      Philosophy
-    </a>
-    <a
-      href="/#features"
-      class="text-white text-base w-full text-left hover:bg-coolgray-200 p-2 rounded flex items-center gap-2 transition-colors"
-    >
-      <i class="ph-duotone ph-lightning text-[#FCD34D] text-xl" aria-hidden="true"></i>
-      Features
-    </a>
-    <a
-      href="/docs"
-      class="text-white text-base w-full text-left hover:bg-coolgray-200 p-2 rounded flex items-center gap-2 transition-colors"
-    >
-      <i class="ph-duotone ph-book-open text-[#FCD34D] text-xl" aria-hidden="true"></i>
-      Docs
-    </a>
-    <a
-      href="/#faq"
-      class="text-white text-base w-full text-left hover:bg-coolgray-200 p-2 rounded flex items-center gap-2 transition-colors"
-    >
-      <i class="ph-duotone ph-question text-[#FCD34D] text-xl" aria-hidden="true"></i>
-      FAQ
-    </a>
-    <a
-      href="/sponsorships"
-      class="text-white text-base w-full text-left hover:bg-coolgray-200 p-2 rounded flex items-center gap-2 transition-colors"
-    >
-      <i class="ph-duotone ph-coins text-[#FCD34D] text-xl" aria-hidden="true"></i>
-      Sponsor Us
-    </a>
-    <a
-      href="/changelog"
-      class="text-white text-base w-full text-left hover:bg-coolgray-200 p-2 rounded flex items-center gap-2 transition-colors"
-    >
-      <i class="ph-duotone ph-clock-counter-clockwise text-[#FCD34D] text-xl" aria-hidden="true"></i>
-      Changelog
-    </a>
-    <a
-      href="https://coollabs.io/discord"
-      class="text-white text-base w-full text-left hover:bg-coolgray-200 p-2 rounded flex items-center gap-2 transition-colors"
-    >
-      <i class="ph-duotone ph-game-controller text-[#FCD34D] text-xl" aria-hidden="true"></i>
-      coolLabs Community (20k+)
-    </a>
-  </div>
-</nav>
+</header>
 
 <script>
   const toggle = document.getElementById("menu-toggle");
   const menu = document.getElementById("mobile-menu");
-  const desktopBreakpoint = window.matchMedia("(min-width: 1280px)");
 
-  const closeMenu = () => {
-    menu?.classList.add("hidden");
-    toggle?.setAttribute("aria-expanded", "false");
+  const setOpen = (open: boolean) => {
+    menu?.classList.toggle("hidden", !open);
+    menu?.classList.toggle("flex", open);
+    toggle?.setAttribute("aria-expanded", String(open));
   };
 
-  toggle?.addEventListener("click", () => {
-    const isHidden = menu?.classList.contains("hidden") ?? true;
-    menu?.classList.toggle("hidden");
-    toggle.setAttribute("aria-expanded", String(isHidden));
+  toggle?.addEventListener("click", () => setOpen(menu?.classList.contains("hidden") ?? false));
+  menu?.querySelectorAll("a").forEach((link) => link.addEventListener("click", () => setOpen(false)));
+  window.matchMedia("(min-width: 1280px)").addEventListener("change", (event) => {
+    if (event.matches) setOpen(false);
   });
 
-  desktopBreakpoint.addEventListener?.("change", (event) => {
-    if (event.matches) closeMenu();
-  });
-
-  menu?.querySelectorAll("a").forEach((link) => {
-    link.addEventListener("click", closeMenu);
-  });
+  fetch("https://cdn.coollabs.io/business.json")
+    .then((res) => res.json())
+    .then((data) => {
+      if (!data.discord) return;
+      document.querySelectorAll(".community-count").forEach((el) => {
+        el.textContent = `${(data.discord / 1000).toFixed(0)}k+`;
+      });
+    })
+    .catch(() => {});
 </script>

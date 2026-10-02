@@ -1,0 +1,140 @@
+---
+// Animated "task -> Jean -> any AI backend" diagram. Pure SVG + CSS, no JS.
+// The task travels to each backend in turn; the tile lights up when it arrives.
+import agents from "../data/agents.js";
+
+const cycle = 3.6;
+const step = cycle / agents.length;
+const tiles = agents.map((agent, i) => {
+  const cx = 56 + i * 101;
+  return { ...agent, cx, wire: `M410 112 C410 165 ${cx} 160 ${cx} 208`, delay: i * step };
+});
+---
+
+<div class="agent-anim" style={`--cycle: ${cycle}s`}>
+  <svg viewBox="0 -40 820 340" class="mx-auto w-full max-w-4xl font-mono" role="img" aria-label={`A task goes to Jean, which runs it with any AI backend: ${agents.map((a) => a.name).join(", ")}`}>
+    <defs>
+      <radialGradient id="jean-glow">
+        <stop offset="0%" stop-color="var(--color-warning)" stop-opacity="0.35" />
+        <stop offset="100%" stop-color="var(--color-warning)" stop-opacity="0" />
+      </radialGradient>
+    </defs>
+
+    <!-- Wires -->
+    <path d="M190 72 L320 72" class="wire" />
+    {tiles.map((tile) => <path d={tile.wire} class="wire" />)}
+
+    <!-- Packets -->
+    {
+      tiles.map((tile) => (
+        <circle r="4" class="packet" style={`offset-path: path('${tile.wire}'); animation-delay: ${tile.delay}s`} />
+      ))
+    }
+
+    <!-- Task -->
+    <g>
+      <rect x="20" y="42" width="170" height="60" rx="10" class="node" />
+      <g class="stroke-success" fill="none" stroke-width="2">
+        <circle cx="50" cy="72" r="9" />
+        <circle cx="50" cy="72" r="2" class="fill-success" />
+      </g>
+      <text x="70" y="68" class="fill-fg" font-size="14">issue #1234</text>
+      <text x="70" y="86" class="fill-fg-faint" font-size="11">or a prompt</text>
+    </g>
+
+    <!-- Jean -->
+    <circle cx="410" cy="72" r="100" fill="url(#jean-glow)" class="glow" />
+    <g>
+      <rect x="320" y="32" width="180" height="80" rx="12" class="node node-jean" />
+      <image href="/logo.png" x="372" y="52" width="22" height="22" />
+      <text x="400" y="70" class="fill-fg font-sans" font-size="20" font-weight="600">Jean</text>
+      <text x="410" y="96" text-anchor="middle" class="fill-fg-faint" font-size="11">pick any backend</text>
+    </g>
+
+    <!-- Backends -->
+    {
+      tiles.map((tile) => (
+        <g>
+          <rect x={tile.cx - 40} y="208" width="80" height="72" rx="10" class="node tile-box" style={`animation-delay: ${tile.delay}s`} />
+          <svg x={tile.cx - 13} y="222" width="26" height="26" viewBox={tile.viewBox} fill={tile.fill} class="logo" style={`animation-delay: ${tile.delay}s`} set:html={tile.body} />
+          <text x={tile.cx} y="268" text-anchor="middle" class="name fill-fg-faint" font-size="10">{tile.name}</text>
+        </g>
+      ))
+    }
+  </svg>
+</div>
+
+<style>
+  .wire {
+    fill: none;
+    stroke: rgb(255 255 255 / 0.12);
+    stroke-width: 1.5;
+    stroke-dasharray: 4 6;
+    animation: wire-flow 1s linear infinite;
+  }
+  .node {
+    fill: var(--color-surface);
+    stroke: rgb(255 255 255 / 0.1);
+  }
+  .node-jean {
+    stroke: var(--color-warning);
+    stroke-width: 1.5;
+  }
+  .packet {
+    fill: var(--color-warning);
+    filter: drop-shadow(0 0 6px var(--color-warning));
+    offset-rotate: 0deg;
+    opacity: 0;
+    animation: packet var(--cycle) var(--ease-out) infinite;
+  }
+  .glow {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: glow 1.8s ease-in-out infinite alternate;
+  }
+  .logo {
+    color: var(--color-fg-faint);
+    animation: logo var(--cycle) ease-out infinite;
+  }
+  /* The tile lights up when its packet arrives (~30% into its own cycle). */
+  .tile-box {
+    animation: tile var(--cycle) ease-out infinite;
+  }
+
+  @keyframes wire-flow {
+    to { stroke-dashoffset: -10; }
+  }
+  @keyframes packet {
+    0% { offset-distance: 0%; opacity: 0; }
+    4% { opacity: 1; }
+    28% { offset-distance: 100%; opacity: 1; }
+    32%, 100% { offset-distance: 100%; opacity: 0; }
+  }
+  @keyframes glow {
+    from { opacity: 0.5; transform: scale(0.92); }
+    to { opacity: 1; transform: scale(1.04); }
+  }
+  @keyframes tile {
+    0%, 26%, 70%, 100% { stroke: rgb(255 255 255 / 0.1); }
+    32%, 50% { stroke: var(--color-warning); }
+  }
+  @keyframes logo {
+    0%, 26%, 70%, 100% { color: var(--color-fg-faint); }
+    32%, 50% { color: var(--color-fg); }
+  }
+
+  @media (max-width: 639px) {
+    .name {
+      display: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .agent-anim * {
+      animation: none !important;
+    }
+    .packet {
+      display: none;
+    }
+  }
+</style>

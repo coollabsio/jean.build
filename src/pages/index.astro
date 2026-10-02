@@ -1,741 +1,326 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import ImageLightbox from "../components/ImageLightbox.svelte";
+import Icon from "../components/Icon.astro";
+import ScreenshotGallery from "../components/ScreenshotGallery.astro";
+import AgentAnimation from "../components/AgentAnimation.astro";
+import screenshots from "../data/screenshots.js";
+import agents from "../data/agents.js";
+import ArrowRight from "reicon/icons/ArrowRight";
+import BranchDown from "reicon/icons/BranchDown";
+import BranchUp from "reicon/icons/BranchUp";
+import CheckCircle from "reicon/icons/CheckCircle";
+import ChevronDown from "reicon/icons/ChevronDown";
+import Code from "reicon/icons/Code";
+import Cpu from "reicon/icons/Cpu";
+import Download from "reicon/icons/Download";
+import Flash from "reicon/icons/Flash";
+import Layers from "reicon/icons/Layers";
+import Link from "reicon/icons/Link";
+import MagicWand from "reicon/icons/MagicWand";
+import Maximize from "reicon/icons/Maximize";
+import Plug from "reicon/icons/Plug";
+import Server from "reicon/icons/Server";
+import Sliders from "reicon/icons/Sliders";
+import TerminalSquare from "reicon/icons/TerminalSquare";
 
-const screenshots = [
-  { src: "/screenshots/SCR-20260304-krym.png", alt: "Project overview with worktrees, sessions, and review status" },
-  { src: "/screenshots/SCR-20260304-ksgh.png", alt: "AI agent resolving merge conflicts automatically" },
-  { src: "/screenshots/SCR-20260304-ksjn.png", alt: "Code review with uncommitted changes and diff view" },
-  { src: "/screenshots/SCR-20260304-ksnq.png", alt: "Commit history with file changes and code diff" },
-  { src: "/screenshots/SCR-20260304-kstl.png", alt: "New session dialog with PR list and context loading" },
-  { src: "/screenshots/SCR-20260304-ktab.png", alt: "Magic commands palette for git operations" },
-  { src: "/screenshots/SCR-20260304-ktwr.png", alt: "AI-powered code review with warnings and suggestions" },
-  { src: "/screenshots/SCR-20260304-kuhk.png", alt: "Magic prompts settings with customizable AI instructions" },
+const features = [
+  { icon: BranchUp, title: "Isolated workspaces", text: "Every task gets its own git worktree." },
+  { icon: Layers, title: "Parallel agents", text: "Run many agents at once, without conflicts." },
+  { icon: TerminalSquare, title: "Magic git commands", text: "Commit, review, open PRs, fix conflicts.", href: "/docs/workflows/magic-commands" },
+  { icon: MagicWand, title: "Magic prompts", text: "Edit every prompt, pick a model per workflow.", href: "/docs/manage/magic-prompts" },
+  { icon: Cpu, title: "Mr. Robot", beta: true, text: "Sweeps GitHub issues and drafts plans." },
+  { icon: Link, title: "Linked projects", text: "Share context across related repos.", href: "/docs/core-concepts/project-linking" },
+  { icon: BranchDown, title: "Automated merging", text: "Merge PRs or worktrees, AI fixes conflicts." },
+  { icon: Plug, title: "Linear integration", text: "Load Linear issues into any session." },
+  { icon: Flash, title: "Fewer tokens", text: "RTK cuts tool-output tokens by 60-90%.", href: "/docs/manage/opinionated-plugins" },
+  { icon: Server, title: "Local + remote", text: "Projects from all servers in one sidebar.", href: "#web-access" },
+  { icon: Sliders, title: "Opinionated", text: "Good defaults, no endless configuration." },
+  { icon: Code, title: "Open source", text: "Apache 2.0. Free forever." },
+];
+
+const faqs = [
+  {
+    q: "What is Jean?",
+    a: "Jean is an open-source AI assistant that helps you manage multiple projects, worktrees, and sessions with Claude CLI, Codex CLI, OpenCode, Cursor, Pi, Command Code, Grok, and Kimi Code. Use it as a desktop app, or run it on a server and connect from a browser or the native app - same projects and sessions either way.",
+  },
+  {
+    q: "Can I run Jean on a server?",
+    a: "Yes. Install <code class=\"font-mono text-fg-dim\">jean-server</code> on Linux (or enable Web Access in the desktop app). Add it in the desktop app under <strong class=\"text-fg-dim\">Connections → Add remote</strong> (or let Jean install it over SSH): its projects appear in the same sidebar as your local ones, grouped by server. You can also open the full UI in a browser with an access token. We recommend binding on Tailscale (or similar) instead of the public internet. See <a href=\"/docs/manage/web-access-and-headless\" class=\"text-link\">Web Access and headless</a>.",
+  },
+  {
+    q: "Is Jean really free?",
+    a: "Yes, 100%. Jean is open source under the Apache 2.0 license. There are no paid tiers, no feature gates, and no usage limits. You bring your own subscription for any supported AI coding agent. If you'd like to support development, consider <a href=\"/sponsorships\" class=\"text-link\">sponsoring us</a>.",
+  },
+  {
+    q: "What platforms does Jean support?",
+    a: "The desktop app is tested on macOS; Windows and Linux desktop builds work but need more testing. Headless <code class=\"font-mono text-fg-dim\">jean-server</code> targets Linux amd64/arm64. Download release builds from GitHub - Node.js and Rust are only required if you build from source.",
+  },
+  {
+    q: "How does Jean work with git?",
+    a: "Jean uses git worktrees to create isolated workspaces for each AI agent session. It automates common git operations like reviewing code, creating commits, opening PRs, and resolving merge conflicts. Each workspace is independent, so multiple agents can work on different branches simultaneously.",
+  },
+  {
+    q: "What AI models does Jean use?",
+    a: "Jean supports Claude CLI, Codex CLI, OpenCode, Cursor, Pi, Command Code, Grok, and Kimi Code. Pi, Command Code, and Kimi Code are currently beta integrations. You bring your own subscription or API access for each provider.",
+  },
+  {
+    q: "Does Jean help reduce token usage?",
+    a: "Yes. The Opinionated pane installs RTK (a CLI proxy that compresses tool outputs 60-90% across every backend) and Caveman (a Claude skill that produces terse replies, ~65-75% shorter) with one click. See <a href=\"/docs/manage/opinionated-plugins\" class=\"text-link\">Opinionated Plugins</a>.",
+  },
+  {
+    q: "How do I contribute?",
+    a: "We welcome contributions of all kinds - code, documentation, bug reports, and feature requests. Check out the <a href=\"https://github.com/coollabsio/jean\" class=\"text-link\" target=\"_blank\">repository's CONTRIBUTING.md</a> to get started.",
+  },
+  {
+    q: "Why is Jean opinionated?",
+    a: "We believe developer tools should make decisions for you, not present you with a wall of configuration options. Jean picks the best workflows - git worktrees for isolation, automated merging, structured context loading - so you can focus on building. If a workflow is clearly better, we just do it that way.",
+  },
 ];
 ---
 
 <Layout>
-  <!-- Hero Section -->
-  <section class="pt-12 md:pt-24 pb-10 text-center px-4">
-    <h1 class="text-3xl md:text-6xl font-bold tracking-tight">
-      A dev environment for AI agents<span class="text-[#FCD34D]">.</span>
+  <section class="px-4 pt-12 text-center md:pt-20">
+    <a
+      href="/philosophy"
+      class="inline-flex items-center gap-2 rounded-full bg-white/[0.04] px-3 py-1 text-xs text-fg-dim ring-1 ring-hairline transition-colors hover:bg-white/[0.07] hover:text-fg"
+    >
+      <span class="size-1.5 rounded-full bg-warning"></span>
+      Open source and free forever. Read our philosophy
+      <Icon icon={ArrowRight} class="size-3.5" />
+    </a>
+    <h1 class="mx-auto mt-6 max-w-3xl text-4xl font-semibold tracking-tight text-balance text-fg md:text-6xl">
+      A dev environment for AI agents<span class="text-warning">.</span>
     </h1>
-    <div class="mt-4 flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-neutral-400">
-      <span class="text-sm">Works with</span>
-      <svg class="w-5 h-5" viewBox="0 0 248 248" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-label="Claude Code"><path d="M52.4285 162.873L98.7844 136.879L99.5485 134.602L98.7844 133.334H96.4921L88.7237 132.862L62.2346 132.153L39.3113 131.207L17.0249 130.026L11.4214 128.844L6.2 121.873L6.7094 118.447L11.4214 115.257L18.171 115.847L33.0711 116.911L55.485 118.447L71.6586 119.392L95.728 121.873H99.5485L100.058 120.337L98.7844 119.392L97.7656 118.447L74.5877 102.732L49.4995 86.1905L36.3823 76.62L29.3779 71.7757L25.8121 67.2858L24.2839 57.3608L30.6515 50.2716L39.3113 50.8623L41.4763 51.4531L50.2636 58.1879L68.9842 72.7209L93.4357 90.6804L97.0015 93.6343L98.4374 92.6652L98.6571 91.9801L97.0015 89.2625L83.757 65.2772L69.621 40.8192L63.2534 30.6579L61.5978 24.632C60.9565 22.1032 60.579 20.0111 60.579 17.4246L67.8381 7.49965L71.9133 6.19995L81.7193 7.49965L85.7946 11.0443L91.9074 24.9865L101.714 46.8451L116.996 76.62L121.453 85.4816L123.873 93.6343L124.764 96.1155H126.292V94.6976L127.566 77.9197L129.858 57.3608L132.15 30.8942L132.915 23.4505L136.608 14.4708L143.994 9.62643L149.725 12.344L154.437 19.0788L153.8 23.4505L150.998 41.6463L145.522 70.1215L141.957 89.2625H143.994L146.414 86.7813L156.093 74.0206L172.266 53.698L179.398 45.6635L187.803 36.802L193.152 32.5484H203.34L210.726 43.6549L207.415 55.1159L196.972 68.3492L188.312 79.5739L175.896 96.2095L168.191 109.585L168.882 110.689L170.738 110.53L198.755 104.504L213.91 101.787L231.994 98.7149L240.144 102.496L241.036 106.395L237.852 114.311L218.495 119.037L195.826 123.645L162.07 131.592L161.696 131.893L162.137 132.547L177.36 133.925L183.855 134.279H199.774L229.447 136.524L237.215 141.605L241.8 147.867L241.036 152.711L229.065 158.737L213.019 154.956L175.45 145.977L162.587 142.787H160.805V143.85L171.502 154.366L191.242 172.089L215.82 195.011L217.094 200.682L213.91 205.172L210.599 204.699L188.949 188.394L180.544 181.069L161.696 165.118H160.422V166.772L164.752 173.152L187.803 207.771L188.949 218.405L187.294 221.832L181.308 223.959L174.813 222.777L161.187 203.754L147.305 182.486L136.098 163.345L134.745 164.2L128.075 235.42L125.019 239.082L117.887 241.8L111.902 237.31L108.718 229.984L111.902 215.452L115.722 196.547L118.779 181.541L121.58 162.873L123.291 156.636L123.14 156.219L121.773 156.449L107.699 175.752L86.304 204.699L69.3663 222.777L65.291 224.431L58.2867 220.768L58.9235 214.27L62.8713 208.48L86.304 178.705L100.44 160.155L109.551 149.507L109.462 147.967L108.959 147.924L46.6977 188.512L35.6182 189.93L30.7788 185.44L31.4156 178.115L33.7079 175.752L52.4285 162.873Z"/></svg>
-      <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-label="Codex"><path d="M22.2819 9.8211a5.9847 5.9847 0 0 0-.5157-4.9108 6.0462 6.0462 0 0 0-6.5098-2.9A6.0651 6.0651 0 0 0 4.9807 4.1818a5.9847 5.9847 0 0 0-3.9977 2.9 6.0462 6.0462 0 0 0 .7427 7.0966 5.98 5.98 0 0 0 .511 4.9107 6.051 6.051 0 0 0 6.5146 2.9001A5.9847 5.9847 0 0 0 13.2599 24a6.0557 6.0557 0 0 0 5.7718-4.2058 5.9894 5.9894 0 0 0 3.9977-2.9001 6.0557 6.0557 0 0 0-.7475-7.0729zm-9.022 12.6081a4.4755 4.4755 0 0 1-2.8764-1.0408l.1419-.0804 4.7783-2.7582a.7948.7948 0 0 0 .3927-.6813v-6.7369l2.02 1.1686a.071.071 0 0 1 .038.052v5.5826a4.504 4.504 0 0 1-4.4945 4.4944zm-9.6607-4.1254a4.4708 4.4708 0 0 1-.5346-3.0137l.142.0852 4.783 2.7582a.7712.7712 0 0 0 .7806 0l5.8428-3.3685v2.3324a.0804.0804 0 0 1-.0332.0615L9.74 19.9502a4.4992 4.4992 0 0 1-6.1408-1.6464zM2.3408 7.8956a4.485 4.485 0 0 1 2.3655-1.9728V11.6a.7664.7664 0 0 0 .3879.6765l5.8144 3.3543-2.0201 1.1685a.0757.0757 0 0 1-.071 0l-4.8303-2.7865A4.504 4.504 0 0 1 2.3408 7.872zm16.5963 3.8558L13.1038 8.364 15.1192 7.2a.0757.0757 0 0 1 .071 0l4.8303 2.7913a4.4944 4.4944 0 0 1-.6765 8.1042v-5.6772a.79.79 0 0 0-.407-.667zm2.0107-3.0231l-.142-.0852-4.7735-2.7818a.7759.7759 0 0 0-.7854 0L9.409 9.2297V6.8974a.0662.0662 0 0 1 .0284-.0615l4.8303-2.7866a4.4992 4.4992 0 0 1 6.6802 4.66zM8.3065 12.863l-2.02-1.1638a.0804.0804 0 0 1-.038-.0567V6.0742a4.4992 4.4992 0 0 1 7.3757-3.4537l-.142.0805L8.704 5.459a.7948.7948 0 0 0-.3927.6813zm1.0976-2.3654l2.602-1.4998 2.6069 1.4998v2.9994l-2.5974 1.4997-2.6067-1.4997Z"/></svg>
-      <svg class="w-5 h-5" viewBox="0 0 512 512" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-label="Opencode"><path fill-rule="evenodd" clip-rule="evenodd" d="M384 416H128V96H384V416ZM320 160H192V352H320V160Z"/></svg>
-      <svg class="w-5 h-5" viewBox="0 0 466.73 532.09" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-label="Cursor"><path d="M457.43,125.94L244.42,2.96c-6.84-3.95-15.28-3.95-22.12,0L9.3,125.94c-5.75,3.32-9.3,9.46-9.3,16.11v247.99c0,6.65,3.55,12.79,9.3,16.11l213.01,122.98c6.84,3.95,15.28,3.95,22.12,0l213.01-122.98c5.75-3.32,9.3-9.46,9.3-16.11v-247.99c0-6.65-3.55-12.79-9.3-16.11h-.01ZM444.05,151.99l-205.63,356.16c-1.39,2.4-5.06,1.42-5.06-1.36v-233.21c0-4.66-2.49-8.97-6.53-11.31L24.87,145.67c-2.4-1.39-1.42-5.06,1.36-5.06h411.26c5.84,0,9.49,6.33,6.57,11.39h-.01Z"/></svg>
-      <svg class="w-5 h-5" viewBox="0 0 800 800" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-label="Pi"><path fill-rule="evenodd" clip-rule="evenodd" d="M165.29 165.29H517.36V400H400V517.36H282.65V634.72H165.29ZM282.65 282.65V400H400V282.65Z"/><path d="M517.36 400H634.72V634.72H517.36Z"/></svg>
-      <svg class="w-5 h-5" viewBox="0 0 446 446" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-label="Command Code"><path fill-rule="evenodd" clip-rule="evenodd" d="M226.665 18.1979H218.375C166.389 18.1979 129.23 18.2366 100.991 22.0332C73.2761 25.7594 56.8935 32.8027 44.8481 44.8481C32.8027 56.8935 25.7594 73.2761 22.0332 100.991C18.2365 129.23 18.1979 166.389 18.1979 218.375V226.665C18.1979 278.651 18.2365 315.809 22.0332 344.048C25.7594 371.764 32.8027 388.146 44.8481 400.192C56.8935 412.237 73.276 419.28 100.991 423.007C129.23 426.803 166.389 426.842 218.375 426.842H226.665C278.651 426.842 315.809 426.803 344.048 423.007C371.764 419.28 388.146 412.237 400.191 400.192C412.237 388.146 419.28 371.764 423.006 344.048C426.803 315.809 426.842 278.651 426.842 226.665V218.375C426.842 166.389 426.803 129.23 423.006 100.991C419.28 73.2761 412.237 56.8935 400.191 44.8481C388.146 32.8027 371.764 25.7594 344.048 22.0332C315.809 18.2366 278.651 18.1979 226.665 18.1979ZM31.9803 31.9803C0 63.9605 0 115.432 0 218.375V226.665C0 329.608 0 381.079 31.9803 413.059C63.9605 445.04 115.432 445.04 218.375 445.04H226.665C329.608 445.04 381.079 445.04 413.059 413.059C445.04 381.079 445.04 329.608 445.04 226.665V218.375C445.04 115.432 445.04 63.9605 413.059 31.9803C381.079 0 329.608 0 226.665 0H218.375C115.432 0 63.9605 0 31.9803 31.9803Z"/><path d="M306.202 85.5845C276.837 85.5845 252.95 109.472 252.95 138.837V161.66H192.09V138.837C192.09 109.472 168.202 85.5845 138.837 85.5845C109.472 85.5845 85.5845 109.472 85.5845 138.837C85.5845 168.202 109.472 192.09 138.837 192.09H161.66V252.95H138.837C109.472 252.95 85.5845 276.837 85.5845 306.202C85.5845 335.568 109.472 359.455 138.837 359.455C168.202 359.455 192.09 335.568 192.09 306.202V283.38H252.95V306.202C252.95 335.568 276.837 359.455 306.202 359.455C335.567 359.455 359.455 335.568 359.455 306.202C359.455 276.837 335.567 252.95 306.202 252.95H283.38V192.09H306.202C335.567 192.09 359.455 168.202 359.455 138.837C359.455 109.472 335.567 85.5845 306.202 85.5845ZM283.38 161.66V138.837C283.38 126.209 293.574 116.015 306.202 116.015C318.831 116.015 329.025 126.209 329.025 138.837C329.025 151.466 318.831 161.66 306.202 161.66H283.38ZM138.837 161.66C126.209 161.66 116.015 151.466 116.015 138.837C116.015 126.209 126.209 116.015 138.837 116.015C151.466 116.015 161.66 126.209 161.66 138.837V161.66H138.837ZM192.09 252.95V192.09H252.95V252.95H192.09ZM306.202 329.025C293.574 329.025 283.38 318.831 283.38 306.202V283.38H306.202C318.831 283.38 329.025 293.574 329.025 306.202C329.025 318.831 318.831 329.025 306.202 329.025ZM138.837 329.025C126.209 329.025 116.015 318.831 116.015 306.202C116.015 293.574 126.209 283.38 138.837 283.38H161.66V306.202C161.66 318.831 151.466 329.025 138.837 329.025Z"/></svg>
-      <svg class="w-5 h-5" viewBox="0 0 34 32" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-label="Grok"><path d="M13.374 20.5407L24.4555 12.3506C24.9988 11.9491 25.7753 12.1057 26.0342 12.7294C27.3966 16.0185 26.7879 19.9712 24.0772 22.6851C21.3666 25.3989 17.595 25.9941 14.1477 24.6386L10.3818 26.3843C15.7832 30.0806 22.3422 29.1665 26.4409 25.0601C29.692 21.8051 30.6989 17.3683 29.7574 13.3673L29.7659 13.3758C28.4006 7.49809 30.1016 5.14871 33.5859 0.344576C33.6683 0.230667 33.7508 0.116757 33.8333 0L29.2482 4.59055V4.57631L13.3712 20.5436"/><path d="M11.0867 22.5312C7.20979 18.8234 7.87821 13.0852 11.1862 9.77618C13.6323 7.3271 17.64 6.32755 21.1385 7.79698L24.8959 6.05986C24.219 5.57005 23.3514 5.04322 22.3559 4.67301C17.8562 2.81914 12.469 3.7418 8.81115 7.40114C5.29271 10.9238 4.18626 16.3402 6.08628 20.9621C7.5056 24.4164 5.17893 26.8597 2.8352 29.3259C2.00465 30.2001 1.17126 31.0744 0.5 31.9999L11.0838 22.534"/></svg>
-      <svg class="w-5 h-5" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Kimi Code"><path d="M21.7202 0.939941C22.9502 0.939941 23.9502 1.93994 23.9502 3.16994C23.9502 4.39994 22.9502 5.39994 21.7202 5.39994H19.7502C19.6002 5.39994 19.4902 5.27994 19.4902 5.13994V3.16994C19.4902 1.93994 20.4902 0.939941 21.7202 0.939941Z" fill="#1783FF"/><path d="M9.39 13.9501L17.82 5.59012C17.98 5.43012 17.89 5.12012 17.68 5.12012H13.14C13.14 5.12012 13.04 5.14012 13 5.18012L3.92 14.1901C3.78 14.3301 3.57 14.2101 3.57 13.9801V5.39012C3.57 5.24012 3.47 5.12012 3.35 5.12012H0.219999C0.0999993 5.12012 0 5.24012 0 5.39012V23.9201C0 24.0701 0.0999993 24.1901 0.219999 24.1901H3.35C3.47 24.1901 3.57 24.0701 3.57 23.9201V20.1401C3.57 20.0601 3.6 19.9801 3.65 19.9301L6.47 17.1401C6.54 17.0701 6.63 17.0601 6.71 17.1101L14.24 22.6501C15.47 23.4801 16.85 23.9901 18.25 24.1401C18.37 24.1501 18.48 24.0301 18.48 23.8701V20.3101C18.48 20.1701 18.4 20.0601 18.29 20.0501C17.47 19.9201 16.66 19.6001 15.94 19.1101L9.42 14.3901C9.28 14.3001 9.27 14.0701 9.39 13.9501Z" fill="currentColor"/></svg>
-    </div>
-    <p
-      class="mt-6 text-neutral-400 max-w-4xl mx-auto text-base md:text-lg leading-relaxed"
-    >
-      An opinionated AI agent workspace with strong opinions about how AI-assisted
-      development should work. Git worktrees, chat sessions, terminals, and GitHub &
-      Linear integrations in one cohesive workflow. Run it on your laptop or a
-      dedicated server - connect from a browser or the native app.
+    <p class="mx-auto mt-5 max-w-2xl text-base text-pretty text-fg-dim md:text-lg">
+      An opinionated AI agent workspace. Git worktrees, chat sessions, terminals,
+      and GitHub &amp; Linear integrations in one cohesive workflow. Run it on
+      your laptop or a dedicated server - connect from a browser or the native app.
     </p>
-    <p class="mt-3 text-neutral-400">
-      Open source &amp; free forever, backed by
-      <a class="underline" href="/philosophy">our philosophy</a>.
-    </p>
-    <!-- Download Badge -->
-    <div
-      class="mt-6 inline-flex items-center gap-2 text-sm px-4 py-2 rounded"
-    >
-      <i class="ph-duotone ph-monitor text-[#FCD34D] text-base" aria-hidden="true"></i>
-      <span class="text-neutral-400">Tested on macOS - Windows &amp; Linux <a href="https://github.com/coollabsio/jean" target="_blank" class="text-[#FCD34D] underline">testers needed</a></span>
-    </div>
 
-    <!-- Download -->
-    <div class="mt-8 max-w-xl mx-auto relative">
-      <div class="flex">
-        <a
-          id="download-btn"
-          href="https://github.com/coollabsio/jean/releases/latest"
-          class="font-mono bg-neutral-900 px-4 py-3 rounded-l text-xs md:text-sm text-left flex items-center justify-between hover:bg-neutral-800 transition-colors cursor-pointer flex-1"
-        >
-          <div class="flex items-center gap-2">
-            <i class="ph-duotone ph-download-simple text-[#FCD34D] text-xl" aria-hidden="true"></i>
+    <div class="mt-8 flex flex-wrap justify-center gap-3">
+      <div class="relative">
+        <div class="flex">
+          <a id="download-btn" href="https://github.com/coollabsio/jean/releases/latest" class="btn btn-primary btn-lg rounded-r-none">
+            <Icon icon={Download} class="size-4" />
             <span id="download-label">Download for your platform</span>
-          </div>
-          <span id="download-version" class="text-neutral-400 text-xs"></span>
-        </a>
-        <button
-          id="download-dropdown-toggle"
-          class="bg-neutral-900 px-3 py-3 rounded-r border-l border-coolgray-400 hover:bg-coolgray-400 transition-colors cursor-pointer"
-          aria-label="Show all platforms"
-        >
-          <i class="ph-duotone ph-caret-down text-neutral-400 text-base transition-transform duration-200" aria-hidden="true"></i>
-        </button>
-      </div>
-      <div id="download-dropdown" class="hidden absolute left-0 right-0 mt-1 bg-coolgray-300 rounded border border-coolgray-400 overflow-hidden z-50">
-        <div id="download-dropdown-list" class="divide-y divide-coolgray-400 text-xs md:text-sm font-mono"></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Screenshots -->
-  <section class="mt-4 pb-6 px-4">
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-5xl mx-auto">
-      {screenshots.map((screenshot, index) => (
-        <button data-lightbox={index} class="block aspect-video overflow-hidden rounded-xl border border-coolgray-300 hover:border-[#FCD34D]/40 transition-colors cursor-pointer">
-          <img src={screenshot.src} alt={screenshot.alt} loading="lazy" class="w-full h-full object-cover object-top" />
-        </button>
-      ))}
-    </div>
-    <ImageLightbox images={screenshots} client:load />
-  </section>
-
-  <!-- Server + Web Access Section -->
-  <section id="web-access" class="mt-16 pb-10 px-4">
-    <div class="rounded-3xl border border-[#FCD34D]/20 bg-gradient-to-br from-coolgray-300 via-coolgray-200 to-[#101010] p-6 md:p-10 overflow-hidden relative">
-      <div class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#FCD34D]/60 to-transparent"></div>
-      <div class="grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] gap-10 items-center">
-        <div>
-          <p class="text-sm font-semibold uppercase tracking-[0.2em] text-[#FCD34D]">Server · Web · Native</p>
-          <h2 class="mt-4 text-2xl md:text-5xl font-bold tracking-tight">
-            Run Jean on a server. Connect from anywhere<span class="text-[#FCD34D]">.</span>
-          </h2>
-          <p class="mt-6 text-neutral-300 text-base md:text-lg leading-relaxed">
-            Put Jean on a dedicated Linux host with
-            <code class="text-neutral-100">jean-server</code>, or turn on Web Access
-            in the desktop app. The same workspace is available over the network -
-            open it in a browser, or point the native Jean app at that remote
-            instance and keep working with the full desktop shell.
-          </p>
-          <ul class="mt-6 space-y-3 text-sm text-neutral-300">
-            <li class="flex gap-3">
-              <i class="ph-duotone ph-check-circle mt-0.5 flex-shrink-0 text-[#FCD34D] text-xl" aria-hidden="true"></i>
-              <span><strong class="text-white">Browser</strong> - full UI via token-protected HTTP/WebSocket (default port 3456).</span>
-            </li>
-            <li class="flex gap-3">
-              <i class="ph-duotone ph-check-circle mt-0.5 flex-shrink-0 text-[#FCD34D] text-xl" aria-hidden="true"></i>
-              <span><strong class="text-white">Native app</strong> - title bar server icon → Add remote; switch Local ↔ remote anytime.</span>
-            </li>
-            <li class="flex gap-3">
-              <i class="ph-duotone ph-check-circle mt-0.5 flex-shrink-0 text-[#FCD34D] text-xl" aria-hidden="true"></i>
-              <span><strong class="text-white">Tailscale recommended</strong> - private mesh access instead of exposing a public port.</span>
-            </li>
-          </ul>
-          <div class="mt-8 flex flex-col sm:flex-row gap-3">
-            <a
-              href="/docs/manage/web-access-and-headless"
-              class="inline-flex items-center justify-center gap-2 rounded bg-[#FCD34D] px-5 py-3 text-sm font-semibold text-[#101010] hover:bg-yellow-300 transition-colors"
-            >
-              Web Access &amp; jean-server
-              <span aria-hidden="true">→</span>
-            </a>
-            <a
-              href="https://github.com/coollabsio/jean#web-access"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="inline-flex items-center justify-center gap-2 rounded border border-coolgray-500 px-5 py-3 text-sm font-semibold text-white hover:bg-coolgray-400 transition-colors"
-            >
-              Install jean-server
-            </a>
-          </div>
+            <span id="download-version" class="font-mono text-xs text-app/60"></span>
+          </a>
+          <button
+            id="download-dropdown-toggle"
+            type="button"
+            aria-label="Show all platforms"
+            aria-expanded="false"
+            class="btn btn-primary btn-lg rounded-l-none border-l border-app/15 px-2.5"
+          >
+            <Icon icon={ChevronDown} class="size-4 transition-transform duration-200" />
+          </button>
         </div>
-
-        <div class="rounded-2xl border border-coolgray-500 bg-[#101010]/70 p-5 md:p-6 shadow-2xl shadow-black/30">
-          <div class="flex items-center gap-3 border-b border-coolgray-400 pb-4">
-            <div class="grid h-10 w-10 place-items-center rounded-xl bg-[#FCD34D]/10 text-[#FCD34D]">
-              <i class="ph-duotone ph-hard-drives text-2xl" aria-hidden="true"></i>
-            </div>
-            <div>
-              <p class="text-sm font-semibold text-white">One host, many clients</p>
-              <p class="text-xs text-neutral-400">Desktop, browser, phone - same projects &amp; sessions</p>
-            </div>
-          </div>
-
-          <div class="mt-5 space-y-4 font-mono text-xs md:text-sm text-neutral-300">
-            <div class="rounded-xl border border-coolgray-500 bg-coolgray-300/40 px-4 py-3">
-              <p class="text-[10px] uppercase tracking-widest text-[#FCD34D]/80">Server</p>
-              <p class="mt-1 text-neutral-100">jean-server --host tailscale</p>
-            </div>
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              <div class="rounded-xl border border-coolgray-500 bg-coolgray-300/40 px-4 py-3">
-                <p class="text-[10px] uppercase tracking-widest text-[#FCD34D]/80">Web</p>
-                <p class="mt-1 text-neutral-100">https://host:3456?token=…</p>
-              </div>
-              <div class="rounded-xl border border-coolgray-500 bg-coolgray-300/40 px-4 py-3">
-                <p class="text-[10px] uppercase tracking-widest text-[#FCD34D]/80">Native</p>
-                <p class="mt-1 text-neutral-100">Add remote → connect</p>
-              </div>
-            </div>
-          </div>
+        <div id="download-dropdown" class="absolute top-full right-0 left-0 z-50 mt-2 hidden overflow-hidden rounded-lg bg-panel text-left ring-1 ring-hairline shadow-2xl shadow-black/40 sm:left-auto sm:w-96">
+          <div id="download-dropdown-list" class="divide-y divide-hairline font-mono text-xs"></div>
         </div>
       </div>
+      <a href="#web-access" class="btn btn-neutral btn-lg">
+        <Icon icon={Server} class="size-4" />
+        Run on a server
+      </a>
     </div>
-  </section>
-
-  <!-- Most Useful Features Intro -->
-  <section class="mt-16 px-4 text-center">
-    <p class="text-sm font-semibold uppercase tracking-[0.2em] text-[#FCD34D]">Most useful features</p>
-    <h2 class="mt-4 text-2xl md:text-4xl font-bold tracking-tight">
-      The parts of Jean you'll use every day<span class="text-[#FCD34D]">.</span>
-    </h2>
-    <p class="mt-4 max-w-3xl mx-auto text-neutral-400 text-base md:text-lg leading-relaxed">
-      Linked Projects, Isolated Workspaces, Magic Git Commands, Magic Prompts,
-      Mr. Robot, and server/web access are the high-leverage workflows that make
-      Jean more than a chat window for agents.
+    <p class="mt-4 text-xs text-fg-faint">
+      Tested on macOS. Windows &amp; Linux
+      <a href="https://github.com/coollabsio/jean" target="_blank" class="text-link">testers needed</a>.
     </p>
+
+    <div class="mt-8 flex flex-wrap items-center justify-center gap-x-5 gap-y-3 text-fg-faint">
+      <span class="eyebrow">Works with</span>
+      {
+        agents.map((agent) => (
+          <svg class="size-5" role="img" viewBox={agent.viewBox} fill={agent.fill} aria-label={agent.name} set:html={agent.body} />
+        ))
+      }
+    </div>
   </section>
 
-  <!-- Linked Projects Section -->
-  <section id="linked-projects" class="mt-10 pb-10 px-4">
-    <div class="rounded-3xl border border-[#FCD34D]/20 bg-gradient-to-br from-coolgray-300 via-coolgray-200 to-[#101010] p-6 md:p-10 overflow-hidden relative">
-      <div class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#FCD34D]/60 to-transparent"></div>
-      <div class="grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] gap-10 items-center">
-        <div>
-          <p class="text-sm font-semibold uppercase tracking-[0.2em] text-[#FCD34D]">Linked Projects</p>
-          <h2 class="mt-4 text-2xl md:text-5xl font-bold tracking-tight">
-            Make multiple repos feel like one knowledge base<span class="text-[#FCD34D]">.</span>
-          </h2>
-          <p class="mt-6 text-neutral-300 text-base md:text-lg leading-relaxed">
-            Link related projects once and Jean makes your AI agents aware of the
-            surrounding codebase. Your app repo, docs repo, backend, SDK, and
-            shared libraries can all contribute context to the same session -
-            without copy-pasting files or rebuilding prompts by hand.
-          </p>
-          <div class="mt-8 flex flex-col sm:flex-row gap-3">
-            <a
-              href="/docs/core-concepts/project-linking"
-              class="inline-flex items-center justify-center gap-2 rounded bg-[#FCD34D] px-5 py-3 text-sm font-semibold text-[#101010] hover:bg-yellow-300 transition-colors"
-            >
-              Learn about project linking
-              <span aria-hidden="true">→</span>
-            </a>
-            <a
-              href="/docs"
-              class="inline-flex items-center justify-center gap-2 rounded border border-coolgray-500 px-5 py-3 text-sm font-semibold text-white hover:bg-coolgray-400 transition-colors"
-            >
-              Read the docs
-            </a>
-          </div>
-        </div>
+  <section class="mt-14 px-4 text-center" aria-label="Jean screenshots">
+    <button
+      type="button"
+      data-gallery-open="0"
+      class="group relative block w-full cursor-zoom-in rounded-xl bg-white/[0.03] p-1.5 ring-1 ring-hairline transition-colors hover:ring-white/15 focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-warning"
+    >
+      <img
+        src={screenshots[0].src}
+        alt={screenshots[0].alt}
+        width="2880"
+        height="1800"
+        fetchpriority="high"
+        class="w-full rounded-lg"
+      />
+      <span class="absolute right-4 bottom-4 inline-flex items-center gap-1.5 rounded-full bg-app/80 px-3 py-1.5 text-xs font-medium text-fg ring-1 ring-hairline backdrop-blur transition-colors group-hover:bg-app">
+        <Icon icon={Maximize} class="size-3.5" />
+        View all {screenshots.length} screenshots
+      </span>
+    </button>
+    <p class="mt-3 text-[13px] text-fg-faint">
+      <span class="text-fg-dim">{screenshots[0].title}.</span> {screenshots[0].text}
+    </p>
+    <div class="mt-4 grid grid-cols-3 gap-2 sm:grid-cols-6">
+      {
+        screenshots.slice(1).map((shot, index) => (
+          <button
+            type="button"
+            data-gallery-open={index + 1}
+            aria-label={`Open screenshot: ${shot.title}`}
+            class="overflow-hidden rounded-md opacity-70 ring-1 ring-hairline transition-opacity hover:opacity-100 focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-warning max-sm:nth-[n+4]:hidden"
+          >
+            <img src={shot.src} alt="" loading="lazy" class="aspect-[16/10] w-full object-cover object-top" />
+          </button>
+        ))
+      }
+    </div>
+  </section>
 
-        <div class="rounded-2xl border border-coolgray-500 bg-[#101010]/70 p-5 md:p-6 shadow-2xl shadow-black/30">
-          <div class="flex items-center gap-3 border-b border-coolgray-400 pb-4">
-            <div class="flex -space-x-2">
-              <span class="grid h-9 w-9 place-items-center rounded-full border border-coolgray-500 bg-coolgray-300 text-xs font-semibold">app</span>
-              <span class="grid h-9 w-9 place-items-center rounded-full border border-coolgray-500 bg-coolgray-300 text-xs font-semibold">api</span>
-              <span class="grid h-9 w-9 place-items-center rounded-full border border-coolgray-500 bg-coolgray-300 text-xs font-semibold">docs</span>
-            </div>
-            <div>
-              <p class="text-sm font-semibold text-white">Shared agent context</p>
-              <p class="text-xs text-neutral-400">Every linked repo stays visible to the AI</p>
-            </div>
-          </div>
+  <section id="how-it-works" class="mt-28 scroll-mt-20 px-4 text-center">
+    <p class="eyebrow">How it works</p>
+    <h2 class="mt-2 text-2xl font-semibold tracking-tight text-fg md:text-3xl">
+      Bring your own agent.
+    </h2>
+    <p class="mx-auto mt-3 max-w-xl text-sm text-fg-faint">
+      Pick an issue, a PR or just a prompt, then choose the backend. Use one per
+      task or run several at once - each in its own git worktree.
+    </p>
+    <div class="mt-10">
+      <AgentAnimation />
+    </div>
+  </section>
 
-          <ul class="mt-5 space-y-4 text-sm text-neutral-300">
-            <li class="flex gap-3">
-              <i class="ph-duotone ph-check-circle mt-0.5 flex-shrink-0 text-[#FCD34D] text-xl" aria-hidden="true"></i>
-              <span>Agents are reminded to check linked repos for <code class="text-neutral-100">CLAUDE.md</code>, <code class="text-neutral-100">AGENTS.md</code>, and <code class="text-neutral-100">docs/</code>.</span>
-            </li>
-            <li class="flex gap-3">
-              <i class="ph-duotone ph-check-circle mt-0.5 flex-shrink-0 text-[#FCD34D] text-xl" aria-hidden="true"></i>
-              <span>Saved contexts from linked projects appear together, so prior decisions travel across repo boundaries.</span>
-            </li>
-            <li class="flex gap-3">
-              <i class="ph-duotone ph-check-circle mt-0.5 flex-shrink-0 text-[#FCD34D] text-xl" aria-hidden="true"></i>
-              <span>Linked projects are available as shared context, so agents can understand and coordinate changes across related repos.</span>
-            </li>
-          </ul>
+  <section id="web-access" class="mt-28 scroll-mt-20 px-4">
+    <div class="card grid items-center gap-10 p-6 md:p-10 lg:grid-cols-[1.1fr_0.9fr]">
+      <div>
+        <p class="eyebrow">Local · Remote · Web</p>
+        <h2 class="mt-2 text-2xl font-semibold tracking-tight text-fg md:text-3xl">
+          Local and remote, in one sidebar<span class="text-warning">.</span>
+        </h2>
+        <p class="mt-4 text-sm text-fg-dim md:text-base">
+          Run <code class="font-mono text-fg">jean-server</code> on any Linux box and
+          add it to the desktop app. Its projects show up next to your local ones,
+          grouped by server. No switching - every session, terminal and git action
+          runs on the server that owns the project.
+        </p>
+        <ul class="mt-6 space-y-3 text-sm text-fg-dim">
+          <li class="flex gap-3">
+            <Icon icon={CheckCircle} class="mt-0.5 size-4 shrink-0 text-warning" />
+            <span><strong class="font-medium text-fg">Many servers</strong> - add as many remotes as you want, or install one over SSH from the app.</span>
+          </li>
+          <li class="flex gap-3">
+            <Icon icon={CheckCircle} class="mt-0.5 size-4 shrink-0 text-warning" />
+            <span><strong class="font-medium text-fg">Agents keep running</strong> - close your laptop, the work continues on the server.</span>
+          </li>
+          <li class="flex gap-3">
+            <Icon icon={CheckCircle} class="mt-0.5 size-4 shrink-0 text-warning" />
+            <span><strong class="font-medium text-fg">Browser too</strong> - every server serves the full UI, token-protected. Tailscale recommended.</span>
+          </li>
+        </ul>
+        <div class="mt-8 flex flex-wrap gap-3">
+          <a href="/docs/manage/web-access-and-headless" class="btn btn-primary">
+            Read the guide
+            <Icon icon={ArrowRight} class="size-4" />
+          </a>
+          <a href="https://github.com/coollabsio/jean#web-access" target="_blank" rel="noopener noreferrer" class="btn btn-neutral">
+            Install jean-server
+          </a>
         </div>
+      </div>
+
+      <div class="rounded-lg bg-app/60 p-4 text-sm ring-1 ring-hairline md:p-5" aria-hidden="true">
+        <div class="flex items-center justify-between border-b border-hairline pb-3">
+          <span class="font-medium text-fg">Projects</span>
+          <span class="rounded-md bg-white/[0.06] px-2 py-0.5 text-xs text-fg-dim ring-1 ring-hairline">All servers</span>
+        </div>
+        {
+          [
+            { server: "Local", projects: [["jean.build", 1], ["coolify.io", 4]] },
+            { server: "devserver", projects: [["coolify", 22, true], ["sentinel", 1, true]] },
+            { server: "hetzner-vps", projects: [["orbit", 3]] },
+          ].map((group) => (
+            <div class="mt-3">
+              <p class="eyebrow flex items-center gap-1.5 text-[10px]">
+                <span class:list={["size-1.5 rounded-full", group.server === "Local" ? "bg-fg-faint" : "bg-success"]} />
+                {group.server}
+              </p>
+              <div class="mt-1.5 space-y-1">
+                {group.projects.map(([name, count, running]) => (
+                  <div class="flex items-center justify-between rounded-md px-2 py-1 text-fg-dim hover:bg-white/[0.04]">
+                    <span class="flex items-center gap-2">
+                      {name}
+                      {running && <span class="size-1.5 animate-pulse rounded-full bg-warning" />}
+                    </span>
+                    <span class="font-mono text-xs text-fg-faint">{count}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))
+        }
       </div>
     </div>
   </section>
 
-  <!-- Agent Workflows Section -->
-  <section id="agent-workflows" class="mt-6 pb-10 px-4">
-    <div class="text-center max-w-3xl mx-auto">
-      <p class="text-sm font-semibold uppercase tracking-[0.2em] text-[#FCD34D]">Agent Workflows</p>
-      <h2 class="mt-4 text-2xl md:text-4xl font-bold tracking-tight">
-        Parallel agents, magic commands, and automation<span class="text-[#FCD34D]">.</span>
+  <section id="features" class="mt-28 scroll-mt-20 px-4 text-center">
+    <p class="eyebrow">Features</p>
+    <h2 class="mt-2 text-2xl font-semibold tracking-tight text-fg md:text-3xl">
+      Everything you need
+    </h2>
+    <p class="mx-auto mt-3 max-w-xl text-sm text-fg-faint">
+      Opinionated by design. <a href="/docs" class="text-link">Read the docs</a> for the details.
+    </p>
+    <div class="mt-10 grid gap-3 text-left sm:grid-cols-2 lg:grid-cols-4">
+      {
+        features.map((feature) => (
+          <div class="card flex items-start gap-3 p-4">
+            <Icon icon={feature.icon} class="mt-0.5 size-4 shrink-0 text-warning" />
+            <div>
+              <h3 class="flex items-center gap-2 text-sm font-medium text-fg">
+                {feature.title}
+                {feature.beta && <span class="rounded-full px-1.5 text-[10px] tracking-wide text-warning uppercase ring-1 ring-warning/30">Beta</span>}
+              </h3>
+              <p class="mt-0.5 text-[13px] leading-5 text-fg-faint">{feature.text}</p>
+              {feature.href && (
+                <a href={feature.href} class="mt-2 inline-flex items-center gap-1 text-[13px] text-fg-dim transition-colors hover:text-warning">
+                  {feature.href.startsWith("#") ? "See how it works" : "Learn more"}
+                  <Icon icon={ArrowRight} class="size-3.5" />
+                </a>
+              )}
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <section id="faq" class="mt-28 scroll-mt-20 px-4">
+    <div class="text-center">
+      <p class="eyebrow">FAQ</p>
+      <h2 class="mt-2 text-2xl font-semibold tracking-tight text-fg md:text-3xl">
+        Frequently asked questions
       </h2>
-      <p class="mt-4 text-neutral-400 text-base md:text-lg leading-relaxed">
-        Jean gives every agent a safe workspace, turns repetitive repo work into
-        guided AI workflows, and can even sweep GitHub issues for you in beta.
-      </p>
     </div>
-
-    <div class="mt-10 grid grid-cols-1 lg:grid-cols-2 gap-6">
-      <article class="rounded-3xl border border-coolgray-400 bg-coolgray-300/80 p-6 md:p-8">
-        <div class="flex items-start gap-3">
-          <div class="mt-1 grid h-12 w-12 flex-shrink-0 place-items-center rounded-2xl bg-[#FCD34D]/10 text-[#FCD34D]">
-            <i class="ph-duotone ph-git-branch text-2xl" aria-hidden="true"></i>
-          </div>
-          <div>
-            <p class="text-sm font-semibold uppercase tracking-[0.16em] text-[#FCD34D]">Isolated Workspaces</p>
-            <h3 class="text-2xl font-bold text-white">Run agents in parallel without chaos.</h3>
-          </div>
-        </div>
-        <p class="mt-5 text-sm leading-6 text-neutral-300">
-          Every task gets its own git worktree, so agents can investigate, edit,
-          test, and propose changes independently while your main repo stays safe.
-        </p>
-        <ul class="mt-5 space-y-3 text-sm text-neutral-300">
-          <li class="flex gap-3"><span class="text-[#FCD34D]">•</span><span>Launch multiple agents at once without branch conflicts or file clobbering.</span></li>
-          <li class="flex gap-3"><span class="text-[#FCD34D]">•</span><span>Review each worktree separately before merging anything back.</span></li>
-          <li class="flex gap-3"><span class="text-[#FCD34D]">•</span><span>Archive, restore, or delete agent workspaces from Jean instead of juggling shell commands.</span></li>
-        </ul>
-      </article>
-
-      <article class="rounded-3xl border border-coolgray-400 bg-coolgray-300/80 p-6 md:p-8">
-        <div class="flex items-start gap-3">
-          <div class="mt-1 grid h-12 w-12 flex-shrink-0 place-items-center rounded-2xl bg-[#FCD34D]/10 text-[#FCD34D]">
-            <i class="ph-duotone ph-terminal-window text-2xl" aria-hidden="true"></i>
-          </div>
-          <div>
-            <p class="text-sm font-semibold uppercase tracking-[0.16em] text-[#FCD34D]">Magic Git Commands</p>
-            <h3 class="text-2xl font-bold text-white">Ship Git work without the busywork.</h3>
-          </div>
-        </div>
-        <p class="mt-5 text-sm leading-6 text-neutral-300">
-          Investigate issues and PRs, run AI code reviews with tracked findings,
-          generate commits and PR descriptions, write release notes, and resolve
-          merge conflicts from one command palette.
-        </p>
-        <ul class="mt-5 space-y-3 text-sm text-neutral-300">
-          <li class="flex gap-3"><span class="text-[#FCD34D]">•</span><span>Load GitHub and Linear context directly into an agent session.</span></li>
-          <li class="flex gap-3"><span class="text-[#FCD34D]">•</span><span>Review diffs, track findings, and turn agent output into actionable fixes.</span></li>
-          <li class="flex gap-3"><span class="text-[#FCD34D]">•</span><span>Create commits, PR copy, release notes, and conflict resolutions with AI help.</span></li>
-        </ul>
-        <a href="/docs/workflows/magic-commands" class="mt-6 inline-flex items-center gap-1 text-[#FCD34D] text-sm hover:underline">
-          Explore Magic Git Commands
-          <span aria-hidden="true">→</span>
-        </a>
-      </article>
-
-      <article class="rounded-3xl border border-coolgray-400 bg-coolgray-300/80 p-6 md:p-8">
-        <div class="flex items-start gap-3">
-          <div class="mt-1 grid h-12 w-12 flex-shrink-0 place-items-center rounded-2xl bg-[#FCD34D]/10 text-[#FCD34D]">
-            <i class="ph-duotone ph-magic-wand text-2xl" aria-hidden="true"></i>
-          </div>
-          <div>
-            <p class="text-sm font-semibold uppercase tracking-[0.16em] text-[#FCD34D]">Magic Prompts</p>
-            <h3 class="text-2xl font-bold text-white">Tune every workflow to your taste.</h3>
-          </div>
-        </div>
-        <p class="mt-5 text-sm leading-6 text-neutral-300">
-          Every built-in workflow has an editable prompt template plus per-prompt
-          backend, model, and reasoning controls. Use fast models for routine
-          copy and stronger reasoning for reviews or investigations.
-        </p>
-        <ul class="mt-5 space-y-3 text-sm text-neutral-300">
-          <li class="flex gap-3"><span class="text-[#FCD34D]">•</span><span>Customize the exact instructions behind commits, reviews, PRs, and investigations.</span></li>
-          <li class="flex gap-3"><span class="text-[#FCD34D]">•</span><span>Choose different backends, models, and effort levels per workflow.</span></li>
-          <li class="flex gap-3"><span class="text-[#FCD34D]">•</span><span>Keep the UI stable while changing how the AI thinks and writes.</span></li>
-        </ul>
-        <a href="/docs/manage/magic-prompts" class="mt-6 inline-flex items-center gap-1 text-[#FCD34D] text-sm hover:underline">
-          Learn about Magic Prompts
-          <span aria-hidden="true">→</span>
-        </a>
-      </article>
-
-      <article class="rounded-3xl border border-coolgray-400 bg-coolgray-300/80 p-6 md:p-8">
-        <div class="flex items-start gap-3">
-          <div class="mt-1 grid h-12 w-12 flex-shrink-0 place-items-center rounded-2xl bg-[#FCD34D]/10 text-[#FCD34D]">
-            <i class="ph-duotone ph-robot text-2xl" aria-hidden="true"></i>
-          </div>
-          <div>
-            <div class="flex items-center gap-2">
-              <p class="text-sm font-semibold uppercase tracking-[0.16em] text-[#FCD34D]">Mr. Robot</p>
-              <span class="rounded-full border border-[#FCD34D]/30 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-[#FCD34D]">Beta</span>
-            </div>
-            <h3 class="text-2xl font-bold text-white">Let Jean sweep issues while you sleep.</h3>
-          </div>
-        </div>
-        <p class="mt-5 text-sm leading-6 text-neutral-300">
-          Mr. Robot polls open GitHub issues, creates one Jean worktree per issue,
-          and drafts a focused plan. If you want, it can yolo approved plans too.
-        </p>
-        <ul class="mt-5 space-y-3 text-sm text-neutral-300">
-          <li class="flex gap-3"><span class="text-[#FCD34D]">•</span><span>Schedule issue sweeps with limits for issue count and active worktrees.</span></li>
-          <li class="flex gap-3"><span class="text-[#FCD34D]">•</span><span>Filter by included or excluded GitHub labels to control what gets picked up.</span></li>
-          <li class="flex gap-3"><span class="text-[#FCD34D]">•</span><span>Choose separate planning and yolo execution backends and models.</span></li>
-        </ul>
-      </article>
+    <div class="mx-auto mt-10 max-w-3xl divide-y divide-hairline border-y border-hairline">
+      {
+        faqs.map((faq) => (
+          <details name="faq" class="group">
+            <summary class="flex cursor-pointer list-none items-center justify-between gap-4 py-4 text-sm font-medium text-fg [&::-webkit-details-marker]:hidden">
+              {faq.q}
+              <Icon icon={ChevronDown} class="size-4 shrink-0 text-fg-faint transition-transform duration-200 group-open:rotate-180" />
+            </summary>
+            <p class="pb-4 text-sm text-fg-dim" set:html={faq.a} />
+          </details>
+        ))
+      }
     </div>
   </section>
 
-  <!-- Features Section -->
-  <section id="features" class="mt-16 pb-10 px-4">
-    <h2 class="text-2xl md:text-4xl font-bold text-center">
-      Everything you need<span class="text-[#FCD34D]">.</span>
-    </h2>
-    <p class="mt-4 text-neutral-400 text-center max-w-2xl mx-auto">
-      Opinionated by design. We picked the best workflows so you can focus on shipping.
-    </p>
-
-    <dl
-      class="mt-12 grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-2xl lg:max-w-none"
-    >
-      <!-- Feature 1 -->
-      <div class="flex flex-col">
-        <dt class="flex items-center gap-x-3 text-xl text-white">
-          <i class="ph-duotone ph-database text-[#FCD34D] text-2xl flex-shrink-0" aria-hidden="true"></i>
-          Worktree Management
-        </dt>
-        <dd
-          class="mt-4 flex flex-auto flex-col text-sm leading-6 text-neutral-400"
-        >
-          <p class="flex-auto">
-            Automated worktree creation, archiving, and restoration. Manage
-            branches and workspaces without touching the command line.
-          </p>
-        </dd>
-      </div>
-
-      <!-- Feature 2 -->
-      <div class="flex flex-col">
-        <dt class="flex items-center gap-x-3 text-xl text-white">
-          <i class="ph-duotone ph-arrows-left-right text-[#FCD34D] text-2xl flex-shrink-0" aria-hidden="true"></i>
-          Automated Merging
-        </dt>
-        <dd
-          class="mt-4 flex flex-auto flex-col text-sm leading-6 text-neutral-400"
-        >
-          <p class="flex-auto">
-            Merge GitHub PRs or local worktrees automatically. Built-in merge
-            conflict resolution powered by AI.
-          </p>
-        </dd>
-      </div>
-
-      <!-- Feature 3 -->
-      <div class="flex flex-col">
-        <dt class="flex items-center gap-x-3 text-xl text-white">
-          <i class="ph-duotone ph-lightning text-[#FCD34D] text-2xl flex-shrink-0" aria-hidden="true"></i>
-          Token-Reduction Plugins
-        </dt>
-        <dd
-          class="mt-4 flex flex-auto flex-col text-sm leading-6 text-neutral-400"
-        >
-          <p class="flex-auto">
-            One-click installs in the Opinionated pane. RTK proxies your CLI
-            tools to cut 60-90% of tool-output tokens across every backend;
-            Caveman trims Claude's replies by ~65-75% with terse, technical
-            output.
-          </p>
-          <a
-            href="/docs/manage/opinionated-plugins"
-            class="mt-3 inline-flex items-center gap-1 text-[#FCD34D] text-sm hover:underline self-start"
-          >
-            Learn more
-            <span aria-hidden="true">→</span>
-          </a>
-        </dd>
-      </div>
-
-      <!-- Feature 4 -->
-      <div class="flex flex-col">
-        <dt class="flex items-center gap-x-3 text-xl text-white">
-          <i class="ph-duotone ph-hard-drives text-[#FCD34D] text-2xl flex-shrink-0" aria-hidden="true"></i>
-          Server, Web &amp; Native Remote
-        </dt>
-        <dd
-          class="mt-4 flex flex-auto flex-col text-sm leading-6 text-neutral-400"
-        >
-          <p class="flex-auto">
-            Run Jean on a Linux server with <code class="text-neutral-100">jean-server</code>,
-            or enable Web Access on the desktop app. Connect from any browser
-            or from the native app (Add remote). Prefer Tailscale for private network access.
-          </p>
-          <a
-            href="/#web-access"
-            class="mt-3 inline-flex items-center gap-1 text-[#FCD34D] text-sm hover:underline self-start"
-          >
-            See how it works
-            <span aria-hidden="true">→</span>
-          </a>
-        </dd>
-      </div>
-
-      <!-- Feature 5 -->
-      <div class="flex flex-col">
-        <dt class="flex items-center gap-x-3 text-xl text-white">
-          <i class="ph-duotone ph-code text-[#FCD34D] text-2xl flex-shrink-0" aria-hidden="true"></i>
-          Open Source
-        </dt>
-        <dd
-          class="mt-4 flex flex-auto flex-col text-sm leading-6 text-neutral-400"
-        >
-          <p class="flex-auto">
-            Free forever under the Apache 2.0 license. Inspect the code,
-            contribute, and make it your own.
-          </p>
-        </dd>
-      </div>
-
-      <!-- Feature 6 -->
-      <div class="flex flex-col">
-        <dt class="flex items-center gap-x-3 text-xl text-white">
-          <i class="ph-duotone ph-sliders-horizontal text-[#FCD34D] text-2xl flex-shrink-0" aria-hidden="true"></i>
-          Opinionated by Design
-        </dt>
-        <dd
-          class="mt-4 flex flex-auto flex-col text-sm leading-6 text-neutral-400"
-        >
-          <p class="flex-auto">
-            No endless configuration. Jean has strong opinions about git
-            workflows, workspace isolation, and AI orchestration - so you
-            spend less time configuring and more time shipping.
-          </p>
-        </dd>
-      </div>
-      <!-- Feature 7 -->
-      <div class="flex flex-col">
-        <dt class="flex items-center gap-x-3 text-xl text-white">
-          <i class="ph-duotone ph-plug text-[#FCD34D] text-2xl flex-shrink-0" aria-hidden="true"></i>
-          Linear Integration
-        </dt>
-        <dd
-          class="mt-4 flex flex-auto flex-col text-sm leading-6 text-neutral-400"
-        >
-          <p class="flex-auto">
-            Investigate Linear issues, load context into sessions, and configure
-            per-project API keys and team settings. Your Linear workflow, built in.
-          </p>
-        </dd>
-      </div>
-
-      <!-- Feature 8: Docs CTA -->
-      <div class="flex flex-col">
-        <dt class="flex items-center gap-x-3 text-xl text-white">
-          <i class="ph-duotone ph-book-open text-[#FCD34D] text-2xl flex-shrink-0" aria-hidden="true"></i>
-          Want to learn more?
-        </dt>
-        <dd
-          class="mt-4 flex flex-auto flex-col text-sm leading-6 text-neutral-400"
-        >
-          <p class="flex-auto">
-            Dive deeper into Jean's workflows, integrations, and configuration.
-            Our docs cover everything from your first session to advanced setups.
-          </p>
-          <a
-            href="/docs"
-            class="mt-3 inline-flex items-center gap-1 text-[#FCD34D] text-sm hover:underline self-start"
-          >
-            Check our docs
-            <span aria-hidden="true">→</span>
-          </a>
-        </dd>
-      </div>
-    </dl>
-  </section>
-
-  <!-- FAQ Section -->
-  <section id="faq" class="mt-16 pb-10 px-4">
-    <h2 class="text-2xl md:text-4xl font-bold text-center">
-      Frequently asked questions<span class="text-[#FCD34D]">.</span>
-    </h2>
-    <p class="mt-4 text-neutral-400 text-center max-w-2xl mx-auto">
-      Everything you need to know about Jean.
-    </p>
-
-    <div
-      class="mt-12 max-w-3xl mx-auto divide-y divide-coolgray-300 border-y border-coolgray-300"
-    >
-      <!-- FAQ 1 -->
-      <div class="faq-item py-4">
-        <button
-          class="faq-button w-full text-left text-sm font-medium flex justify-between items-center text-white"
-          aria-expanded="false"
-        >
-          <span>What is Jean?</span>
-          <i class="ph-duotone ph-caret-down text-2xl transition-transform duration-200 flex-shrink-0" aria-hidden="true"></i>
-        </button>
-        <p class="faq-answer hidden mt-2 text-sm text-neutral-300 text-left">
-          Jean is an open-source AI assistant that helps you manage multiple
-          projects, worktrees, and sessions with Claude CLI, Codex CLI, OpenCode, Cursor, Pi, Command Code, Grok, and Kimi Code.
-          Use it as a desktop app, or run it on a server and connect from a
-          browser or the native app - same projects and sessions either way.
-        </p>
-      </div>
-
-      <!-- FAQ 2 -->
-      <div class="faq-item py-4">
-        <button
-          class="faq-button w-full text-left text-sm font-medium flex justify-between items-center text-white"
-          aria-expanded="false"
-        >
-          <span>Can I run Jean on a server?</span>
-          <i class="ph-duotone ph-caret-down text-2xl transition-transform duration-200 flex-shrink-0" aria-hidden="true"></i>
-        </button>
-        <p class="faq-answer hidden mt-2 text-sm text-neutral-300 text-left">
-          Yes. Install <code class="text-neutral-100">jean-server</code> on Linux
-          (or enable Web Access in the desktop app). Clients connect over
-          token-protected HTTP/WebSocket: open the URL in a browser, or in the
-          native Jean app use the title bar server icon → <strong>Add remote</strong>.
-          We recommend binding on Tailscale (or similar) instead of the public internet.
-          See
-          <a href="/docs/manage/web-access-and-headless" class="text-[#FCD34D] underline">Web Access and headless</a>.
-        </p>
-      </div>
-
-      <!-- FAQ 3 -->
-      <div class="faq-item py-4">
-        <button
-          class="faq-button w-full text-left text-sm font-medium flex justify-between items-center text-white"
-          aria-expanded="false"
-        >
-          <span>Is Jean really free?</span>
-          <i class="ph-duotone ph-caret-down text-2xl transition-transform duration-200 flex-shrink-0" aria-hidden="true"></i>
-        </button>
-        <p class="faq-answer hidden mt-2 text-sm text-neutral-300 text-left">
-          Yes, 100%. Jean is open source under the Apache 2.0 license. There
-          are no paid tiers, no feature gates, and no usage limits. You bring
-          your own subscription for any supported AI coding agent. If you'd like to support development,
-          consider <a href="/sponsorships" class="text-[#FCD34D] underline">sponsoring us</a>.
-        </p>
-      </div>
-
-      <!-- FAQ 4 -->
-      <div class="faq-item py-4">
-        <button
-          class="faq-button w-full text-left text-sm font-medium flex justify-between items-center text-white"
-          aria-expanded="false"
-        >
-          <span>What platforms does Jean support?</span>
-          <i class="ph-duotone ph-caret-down text-2xl transition-transform duration-200 flex-shrink-0" aria-hidden="true"></i>
-        </button>
-        <p class="faq-answer hidden mt-2 text-sm text-neutral-300 text-left">
-          The desktop app is tested on macOS; Windows and Linux desktop builds
-          work but need more testing. Headless <code class="text-neutral-100">jean-server</code>
-          targets Linux amd64/arm64. Download release builds from GitHub - Node.js
-          and Rust are only required if you build from source.
-        </p>
-      </div>
-
-      <!-- FAQ 5 -->
-      <div class="faq-item py-4">
-        <button
-          class="faq-button w-full text-left text-sm font-medium flex justify-between items-center text-white"
-          aria-expanded="false"
-        >
-          <span>How does Jean work with git?</span>
-          <i class="ph-duotone ph-caret-down text-2xl transition-transform duration-200 flex-shrink-0" aria-hidden="true"></i>
-        </button>
-        <p class="faq-answer hidden mt-2 text-sm text-neutral-300 text-left">
-          Jean uses git worktrees to create isolated workspaces for each AI
-          agent session. It automates common git operations like reviewing code,
-          creating commits, opening PRs, and resolving merge conflicts. Each
-          workspace is independent, so multiple agents can work on different
-          branches simultaneously.
-        </p>
-      </div>
-
-      <!-- FAQ 6 -->
-      <div class="faq-item py-4">
-        <button
-          class="faq-button w-full text-left text-sm font-medium flex justify-between items-center text-white"
-          aria-expanded="false"
-        >
-          <span>What AI models does Jean use?</span>
-          <i class="ph-duotone ph-caret-down text-2xl transition-transform duration-200 flex-shrink-0" aria-hidden="true"></i>
-        </button>
-        <p class="faq-answer hidden mt-2 text-sm text-neutral-300 text-left">
-          Jean supports Claude CLI, Codex CLI, OpenCode, Cursor, Pi, Command Code, Grok, and Kimi Code. Pi, Command Code, and Kimi Code are currently beta integrations. You bring
-          your own subscription or API access for each provider.
-        </p>
-      </div>
-
-      <!-- FAQ 6: Token reduction -->
-      <div class="faq-item py-4">
-        <button
-          class="faq-button w-full text-left text-sm font-medium flex justify-between items-center text-white"
-          aria-expanded="false"
-        >
-          <span>Does Jean help reduce token usage?</span>
-          <i class="ph-duotone ph-caret-down text-2xl transition-transform duration-200 flex-shrink-0" aria-hidden="true"></i>
-        </button>
-        <p class="faq-answer hidden mt-2 text-sm text-neutral-300 text-left">
-          Yes. The Opinionated pane installs RTK (a CLI proxy that compresses
-          tool outputs 60-90% across every backend) and Caveman (a Claude
-          skill that produces terse replies, ~65-75% shorter) with one
-          click. See
-          <a href="/docs/manage/opinionated-plugins" class="text-[#FCD34D] underline">Opinionated Plugins</a>.
-        </p>
-      </div>
-
-      <!-- FAQ 7: Contribute -->
-      <div class="faq-item py-4">
-        <button
-          class="faq-button w-full text-left text-sm font-medium flex justify-between items-center text-white"
-          aria-expanded="false"
-        >
-          <span>How do I contribute?</span>
-          <i class="ph-duotone ph-caret-down text-2xl transition-transform duration-200 flex-shrink-0" aria-hidden="true"></i>
-        </button>
-        <p class="faq-answer hidden mt-2 text-sm text-neutral-300 text-left">
-          We welcome contributions of all kinds - code, documentation, bug
-          reports, and feature requests. Check out the
-          <a href="https://github.com/coollabsio/jean" class="text-[#FCD34D] underline" target="_blank">repository's CONTRIBUTING.md</a>
-          to get started.
-        </p>
-      </div>
-
-      <!-- FAQ 8 -->
-      <div class="faq-item py-4">
-        <button
-          class="faq-button w-full text-left text-sm font-medium flex justify-between items-center text-white"
-          aria-expanded="false"
-        >
-          <span>Why is Jean opinionated?</span>
-          <i class="ph-duotone ph-caret-down text-2xl transition-transform duration-200 flex-shrink-0" aria-hidden="true"></i>
-        </button>
-        <p class="faq-answer hidden mt-2 text-sm text-neutral-300 text-left">
-          We believe developer tools should make decisions for you, not present
-          you with a wall of configuration options. Jean picks the best
-          workflows - git worktrees for isolation, automated merging,
-          structured context loading - so you can focus on building. If a
-          workflow is clearly better, we just do it that way.
-        </p>
-      </div>
-    </div>
-  </section>
+  <ScreenshotGallery />
 </Layout>
 
 <script>
-  // Lightbox triggers
-  document.querySelectorAll<HTMLElement>("[data-lightbox]").forEach((el) => {
-    el.addEventListener("click", () => {
-      const index = parseInt(el.dataset.lightbox || "0", 10);
-      window.dispatchEvent(new CustomEvent("open-lightbox", { detail: { index } }));
-    });
-  });
-
-  // FAQ accordion
-  document.querySelectorAll(".faq-button").forEach((button) => {
-    button.addEventListener("click", () => {
-      const answer = button.nextElementSibling as HTMLElement;
-      const isOpen = button.getAttribute("aria-expanded") === "true";
-
-      // Close all
-      document.querySelectorAll(".faq-button").forEach((btn) => {
-        btn.setAttribute("aria-expanded", "false");
-        const chevron = btn.querySelector("svg");
-        if (chevron) chevron.style.transform = "";
-        const ans = btn.nextElementSibling as HTMLElement;
-        if (ans) ans.classList.add("hidden");
-      });
-
-      // Toggle current
-      if (!isOpen) {
-        button.setAttribute("aria-expanded", "true");
-        const chevron = button.querySelector("svg");
-        if (chevron) chevron.style.transform = "rotate(180deg)";
-        if (answer) answer.classList.remove("hidden");
-      }
-    });
-  });
-
   // OS-aware download button
   const btn = document.getElementById("download-btn") as HTMLAnchorElement;
   const label = document.getElementById("download-label");
@@ -778,24 +363,18 @@ const screenshots = [
   const osExtMap: Record<string, string> = { mac: ".dmg", windows: "-setup.exe", linux: isArm ? "_arm64.AppImage" : "_amd64.AppImage" };
   const recommendedExt = osExtMap[os];
 
-  // Toggle dropdown
-  if (dropdownToggle && dropdown) {
-    dropdownToggle.addEventListener("click", () => {
-      const isOpen = !dropdown.classList.contains("hidden");
-      dropdown.classList.toggle("hidden");
-      const chevron = dropdownToggle.querySelector("svg");
-      if (chevron) chevron.style.transform = isOpen ? "" : "rotate(180deg)";
-    });
+  const setDropdownOpen = (open: boolean) => {
+    dropdown?.classList.toggle("hidden", !open);
+    dropdownToggle?.setAttribute("aria-expanded", String(open));
+    const chevron = dropdownToggle?.querySelector("svg");
+    if (chevron) chevron.style.transform = open ? "rotate(180deg)" : "";
+  };
 
-    // Close on outside click
-    document.addEventListener("click", (e) => {
-      if (!(e.target as Element).closest("#download-dropdown-toggle") && !(e.target as Element).closest("#download-dropdown")) {
-        dropdown.classList.add("hidden");
-        const chevron = dropdownToggle.querySelector("svg");
-        if (chevron) chevron.style.transform = "";
-      }
-    });
-  }
+  dropdownToggle?.addEventListener("click", () => setDropdownOpen(dropdown?.classList.contains("hidden") ?? false));
+  document.addEventListener("click", (e) => {
+    const target = e.target as Element;
+    if (!target.closest("#download-dropdown-toggle") && !target.closest("#download-dropdown")) setDropdownOpen(false);
+  });
 
   // Cache release data in localStorage (10 min TTL)
   const CACHE_KEY = "jean-release-v4";
@@ -833,12 +412,12 @@ const screenshots = [
         if (!entry) continue;
         const link = document.createElement("a");
         link.href = entry.url;
-        link.className = `flex ${entry.isOlder ? "items-start" : "items-center"} justify-between px-4 py-2.5 hover:bg-coolgray-400 transition-colors text-white`;
+        link.className = `flex ${entry.isOlder ? "items-start" : "items-center"} justify-between gap-4 px-4 py-2.5 text-fg transition-colors hover:bg-white/[0.06]`;
         const recommended = ext === recommendedExt;
-        const badge = recommended ? `<span class="text-emerald-400 text-xs ml-2">Recommended</span>` : "";
-        const building = entry.isOlder ? `<div class="text-[#FCD34D] text-xs">Currently building ${latestTag}...</div>` : "";
+        const badge = recommended ? `<span class="ml-2 text-success">Recommended</span>` : "";
+        const building = entry.isOlder ? `<div class="text-warning">Currently building ${latestTag}...</div>` : "";
         const filename = entry.isOlder ? `${entry.name} (${entry.tag})` : entry.name;
-        link.innerHTML = `<div><div>${assetLabels[ext] || entry.name}${badge}</div>${building}</div><span class="text-neutral-400 text-xs">${filename}</span>`;
+        link.innerHTML = `<div class="shrink-0"><div>${assetLabels[ext] || entry.name}${badge}</div>${building}</div><span class="truncate text-fg-faint">${filename}</span>`;
         dropdownList.appendChild(link);
       }
     }
