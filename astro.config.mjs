@@ -8,6 +8,9 @@ export default defineConfig({
   site: 'https://jean.build',
   integrations: [svelte(), sitemap()],
   trailingSlash: 'never',
+  redirects: {
+    '/philosophy': 'https://coollabs.io/philosophy',
+  },
   build: {
     format: 'file',
   },
