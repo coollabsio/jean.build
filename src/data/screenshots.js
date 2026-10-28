@@ -9,9 +9,9 @@ export default [
   },
   {
     src: "/images/screenshots/recent-sessions.webp",
-    title: "Recent sessions, parallel agents",
-    text: "The Recent tab lists every session across all projects, with running agents marked. Open several sessions side by side in one workspace.",
-    alt: "Jean Recent tab with sessions from many projects, next to an open session with four session tabs and an agent recap",
+    title: "Parallel sessions with recaps",
+    text: "Run several sessions side by side in one worktree. Every finished turn ends with a recap of what changed and how it was tested.",
+    alt: "Jean session with an agent recap table, next to a second session tab",
   },
   {
     src: "/images/screenshots/terminal.webp",
